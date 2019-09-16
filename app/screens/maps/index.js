@@ -416,6 +416,7 @@ export default class Maps extends Component {
       fontSizeResponsive,
     } = Styles;
 
+    
     if(this.state.loading){
       return (
         <View style={[container, centerAll]}>

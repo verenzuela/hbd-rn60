@@ -5,6 +5,9 @@ import {
   StyleSheet, 
   TouchableOpacity, 
   Image,
+  Text,
+  View,
+  Animated
 } from 'react-native';
 
 import { 
@@ -19,6 +22,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomSidebarMenu from './app/components/sidebar';
+import Styles from './app/commons/styles';
 
 import Maps from './app/screens/maps';
 import Search from './app/screens/search';
@@ -32,10 +36,95 @@ import moment from 'moment';
 
 let date = moment(new Date()).add(1,'days');
 
-class App extends Component {
-  render() {
-    return <AppContainer />;
+
+class ImageLoader extends Component {
+  state = {
+    opacity: new Animated.Value(0),
   }
+
+  onLoad = () => {
+    Animated.timing( this.state.opacity, {
+      toValue: 1,
+      duration: 4000,
+      useNativeDriver: true,
+
+    }).start();
+  }
+
+  render() {
+    return(
+      <Animated.Image 
+        onLoad={this.onLoad}
+        {...this.props}
+        style={[
+          {
+            opacity: this.state.opacity,
+            transform: [
+              {
+                scale: this.state.opacity.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.85, 1],
+                })
+              }
+            ]
+          },
+          this.props.style,
+        ]}
+      />
+    )
+  }
+}
+
+
+class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      initSplash: true,
+    };
+    
+    setTimeout(
+      () =>
+        this.setState({ initSplash: false,  }),
+      4000
+    );
+  };
+
+  render() {
+    
+    const {
+      container, 
+      centerAll,
+      fontColorGreen,
+    } = Styles;
+
+    if(this.state.initSplash){
+      return (
+        <View style={[container, centerAll, { paddingLeft: 20, paddingRight: 20 }]}>
+          
+          <ImageLoader
+            style={{ height: '100%', width: '100%', resizeMode: 'contain' }}
+            source={ require('./app/assets/png/HBD_logo_color.png') }
+            resizeMode="contain"
+            resizeMethod="resize"
+          />
+          <View style={{ height:40, paddingBottom:200, }} >
+            <Text style={[ fontColorGreen, { fontSize: 35, }]} >Enjoy your day-stay!</Text>  
+          </View>
+          
+
+          
+
+        </View>
+      );
+    };
+
+    return <AppContainer />;
+  
+  }
+
 }
 export default App;
 
