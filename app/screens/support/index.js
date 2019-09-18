@@ -32,34 +32,8 @@ export default class Support extends Component {
     return (
 
       <View style={container}>
-
-        <View style={{ flex: 3, padding:20 }}>
-          <View style={[container, borderColor, { borderWidth:2, borderRadius: 5 }]}>
-            <MapView
-              zoomEnabled={false}
-              scrollEnabled={false}
-              provider={PROVIDER_GOOGLE}
-              style={styles.map}
-              initialRegion={{
-                latitude: 40.7550883,
-                longitude: -73.9798095,
-                latitudeDelta: 0.0026,
-                longitudeDelta: 0.0016
-              }}
-            >
-              <Marker
-                draggable
-                coordinate={{
-                  latitude: 40.7550883,
-                  longitude: -73.9798095,
-                }}
-                title={'HotelsByDay'}
-                description={'+1.917.994.6284'}
-              />
-            </MapView>
-          </View>
-        </View>
-        <View style={{ flex: 2, padding:20 }}>
+        
+        <View style={{ flex: 1, padding:20 }}>
 
           <View style={container}>
 

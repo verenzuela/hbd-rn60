@@ -10,6 +10,7 @@ import {
   Platform,
   Image,
 } from 'react-native';
+import NetInfo from "@react-native-community/netinfo";
 import { WebView } from 'react-native-webview';
 import Geolocation from '@react-native-community/geolocation';
 import { NavigationActions } from "react-navigation";
@@ -20,15 +21,19 @@ import googlemaps from '../../api/googlemaps.js';
 import Styles from '../../commons/styles';
 import { YellowBox } from 'react-native';
 import moment from 'moment';
+import url from '../../commons/base_urls.js';
 
 export default class Maps extends Component {
 
   constructor(props) {
     super(props);
 
+    this.hbdUrl = url.hbd_url;
     this.hotelsbyday = new hotelsbydayApi();
     this.googlemaps = new googlemaps();
     this.state = {
+      status: false,
+      networkError: false,
       location: this.props.location,
       dateArrival: this.props.dateArrival,
       hotels: [],
@@ -43,6 +48,8 @@ export default class Maps extends Component {
       currentLocation: null,
       hotelDetail: false,  
       hotelDetailUrl: '',
+      latitudeDelta: 0.00922,
+      longitudeDelta: 0.00421,
     };
 
     YellowBox.ignoreWarnings([
@@ -54,8 +61,28 @@ export default class Maps extends Component {
 
 
   componentDidMount = () => {
-    this.validLocationPermission();
+
+    NetInfo.isConnected.addEventListener('change', this.handleConnectionChange);
+
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { 
+        this.setState({ status: isConnected }, () => {
+          
+          if(this.state.status){
+            this.validLocationPermission();  
+          }else{
+            //error conection
+
+          }
+
+        });
+      }
+    );
+
   };
+
+
+  
 
   validLocationPermission = () =>{
     var that =this;
@@ -88,6 +115,7 @@ export default class Maps extends Component {
     var that =this;
     if( this.state.currentLatitude != 'unknown' && this.state.currentLongitude != 'unknown' ){
       this.getCurrentCity(this.state.currentLatitude, this.state.currentLongitude );
+      //this.getCurrentCity('40.8442293','-73.8647608');
     }else{
       that.callLocation(that);
     }
@@ -95,7 +123,13 @@ export default class Maps extends Component {
 
 
   gpsCordenatesUpdate = () => {
-  
+    var that =this;
+    if( this.state.currentLatitude != 'unknown' && this.state.currentLongitude != 'unknown' ){
+      this.getCurrentCity(this.state.currentLatitude, this.state.currentLongitude );
+      //this.getCurrentCity('40.8442293','-73.8647608');
+    }else{
+      that.callLocation(that);
+    }
   };
 
 
@@ -113,9 +147,10 @@ export default class Maps extends Component {
 
       },
       (error) => {
-        that.setState({ gpsError:true });
-        that.setState({ gpsErrorMsg:error.message });
-        that.setState({ loading: false });          
+        that.setState({ gpsError: true });
+        that.setState({ gpsErrorMsg: error.message });
+        //that.setState({ networkError: true });
+        //that.setState({ loading: false });          
       },
       { enableHighAccuracy: true, timeout: 5000, maximumAge: 10000 }
     );
@@ -133,7 +168,7 @@ export default class Maps extends Component {
   };
 
 
-  UNSAFE_componentWillReceiveProps = (nextProps) => {
+  componentWillReceiveProps = (nextProps) => {
 
     if(nextProps.navigation.state.params.location){
 
@@ -186,10 +221,38 @@ export default class Maps extends Component {
   };
 
 
-  UNSAFE_componentWillUnmount = () => {
+  componentWillUnmount() {
+    
+    NetInfo.isConnected.removeEventListener('change', this.handleConnectionChange);
+
     Geolocation.clearWatch(this.watchID);
+
+    this.setState({ 
+     status: false,
+      networkError: false,
+      location: null,
+      dateArrival: null,
+      hotels: [],
+      hotels_count: 0,
+      loading: true,
+      coordinates: [],
+      mapRef: null,
+      currentLatitude: 'unknown',
+      currentLongitude: 'unknown',
+      gpsError: false,
+      gpsErrorMsg: null,
+      currentLocation: null,
+      hotelDetail: false,  
+      hotelDetailUrl: '',
+      latitudeDelta: 0.00922,
+      longitudeDelta: 0.00421,
+    })
+
   };
 
+  handleConnectionChange = (isConnected) => {
+        this.setState({ status: isConnected });
+  };
 
   onRegionChange = (region) => {
     this.setState({ region });
@@ -207,12 +270,10 @@ export default class Maps extends Component {
   getHotelsByCity = (cityName, date) => {
     this.hotelsbyday.getHotelsByCity(cityName, date).then( res => {
       this.setState({
-        hotels: res._embedded.hotels,
-        hotels_count: res.hotels_count,
+        hotels: res.data._embedded.hotels,
+        coordinates: res.data._embedded.lat_lon,
+        hotels_count: res.data.hotels_count,
       }, () => {
-        this.state.hotels.map(item => (
-          this.state.coordinates.push({ latitude: item.lat , longitude: item.lon })
-        ));
         this.setState({ 
           location: cityName,
           loading: false,
@@ -226,28 +287,39 @@ export default class Maps extends Component {
   getHotelsByGeo = (lat, lon, date) => {
     this.hotelsbyday.getHotelsByGeo(lat, lon, date).then( res => {
       this.setState({
-        hotels: res._embedded.hotels,
-        hotels_count: res.hotels_count,
-      }, () => {
-        this.state.hotels.map(item => (
-          this.state.coordinates.push({ latitude: item.lat , longitude: item.lon })
-        ));
+        hotels: res.data._embedded.hotels,
+        coordinates: res.data._embedded.lat_lon,
+        hotels_count: res.data.hotels_count,
+      }, () => {        
+
         this.setState({ 
           location: null,
           loading: false 
         });
+
       });
     });
   };
 
 
   getCurrentCity = (lat, lon) => {
-    this.getHotelsByGeo( lat, lon, this.state.dateArrival );
+    //
     this.googlemaps.getCityByGeoLocation(lat, lon).then( res => {
-      this.setState({ 
-        currentLocation: res.results[0].formatted_address,
-      });
+      if(res.data == ''){
+        if(res.error == 'Network request failed'){
+          this.setState({ 
+            networkError: true,
+          });
+        }
+      }else{
+        this.setState({ 
+          currentLocation: res.data.results[0].formatted_address,
+        }, () => {
+          this.getHotelsByGeo( lat, lon, this.state.dateArrival );
+        });
+      }  
     });
+    
   };
 
 
@@ -263,11 +335,12 @@ export default class Maps extends Component {
   getLocationName = ( prefix=true ) => {
 
     if(this.state.location==null && this.state.currentLocation==null){
-      return `Current location`;
+      return `Current Location`;
     }else{
       
       if(this.state.location==null && this.state.currentLocation!=null) {
-        return `${ this.state.currentLocation }`;
+        //return `${ this.state.currentLocation }`;
+        return `Current Location`;
       }else{
         return (prefix) ? `City: ${ this.state.location }` : `${ this.state.location }`;
       }
@@ -280,7 +353,7 @@ export default class Maps extends Component {
   goToHotelDescription = ( hotelId ) => {
 
     this.props.navigation.navigate('hotelDetail', {
-      hotelDetailUrl: `http://www.demo.hotelsbyday.com/en/hotels/1/1/${hotelId}?inapp=true&reactApp=1&date=${moment( this.state.dateArrival ).format('MMM D, Y')}`,
+      hotelDetailUrl: `${this.hbdUrl}en/hotels/1/1/${hotelId}?inapp=true&reactApp=1&date=${moment( this.state.dateArrival ).format('MMM D, Y')}`,
     });
     
   }
@@ -345,18 +418,21 @@ export default class Maps extends Component {
 
   renderMap = ( hotels, provider ) => {
     if( this.state.hotels_count > 1 ){
-      return( 
-        <MapView
-          provider={provider}
-          style={{ alignSelf: 'stretch', height: '100%' }}
-          ref={(ref) => { this.state.mapRef = ref }}
-          onLayout = {() => this.state.mapRef.fitToCoordinates(this.state.coordinates, { edgePadding: { top: 10, right: 10, bottom: 10, left: 10 }, animated: false })}
-        >
-          {hotels.map(items => (
-            this.renderMarkers(items)
-          ))}
-        </MapView>
-      )
+
+        return( 
+          <MapView
+            provider={provider}
+            style={{ alignSelf: 'stretch', height: '100%' }}
+            ref={(ref) => { this.state.mapRef = ref }}
+            onLayout = {() => this.state.mapRef.fitToCoordinates(this.state.coordinates, { edgePadding: { top: 20, right: 20, bottom: 20, left: 20 }, animated: false })}
+          >
+            {hotels.map(items => (
+              this.renderMarkers(items)
+            ))}
+          </MapView>
+        )
+
+
     }else{
       return(
         <MapView
@@ -365,8 +441,8 @@ export default class Maps extends Component {
           initialRegion={{
             latitude: this.state.hotels[0].lat,
             longitude: this.state.hotels[0].lon,
-            latitudeDelta: 0.00922,
-            longitudeDelta: 0.00421,
+            latitudeDelta: this.state.latitudeDelta,
+            longitudeDelta: this.state.longitudeDelta,
           }}
         > 
           {hotels.map(item => (
@@ -427,30 +503,44 @@ export default class Maps extends Component {
     };
 
 
-    if(this.state.hotels_count == 0){
+    if(this.state.networkError){
       return (
         <View style={[container, centerAll]}>
-          { this.renderBarButtons( this.state.dateArrival, container, centerAll, backgroundColor, mapsSearchbuttons, fontColorGreen, mapsSearchbuttonsTxt ) }
           <View style={[container, centerAll]}>
-            <Text style={{ margin:20, }}>No hotels found, please choose another location or change your arrival date...</Text>
+            <Text style={{ margin:20, }}>Network request failed.</Text>
           </View>
         </View>
       );
     }else{
-      return (
-        <View style={[container]}>
-          { this.renderBarButtons( this.state.dateArrival, container, centerAll, backgroundColor, mapsSearchbuttons, fontColorGreen, mapsSearchbuttonsTxt ) }
-          <View style={[container]}>
-            { this.renderMap( this.state.hotels, PROVIDER_GOOGLE  ) }
-          </View>
-          <View style={[ centerAll, { borderTopWidth: 0.3, borderColor: 'grey', width:'100%', height: 40, flexDirection: 'row' } ]}>
-            <View style={[container, { padding: 5, } ]}>
-              <Text allowFontScaling={false} style={[ fontSizeResponsive ]} > { this.renderTextFoundBar(this.state.hotels) } </Text>
+
+      if(this.state.hotels_count == 0){
+        return (
+          <View style={[container, centerAll]}>
+            { this.renderBarButtons( this.state.dateArrival, container, centerAll, backgroundColor, mapsSearchbuttons, fontColorGreen, mapsSearchbuttonsTxt ) }
+            <View style={[container, centerAll]}>
+              <Text style={{ margin:20, }}>No hotels found, please choose another location or change your arrival date...</Text>
             </View>
           </View>
-        </View>
-      );
-    };  
+        );
+      }else{
+        return (
+          <View style={[container]}>
+            { this.renderBarButtons( this.state.dateArrival, container, centerAll, backgroundColor, mapsSearchbuttons, fontColorGreen, mapsSearchbuttonsTxt ) }
+            <View style={[container]}>
+              { this.renderMap( this.state.hotels, PROVIDER_GOOGLE  ) }
+            </View>
+            <View style={[ centerAll, { borderTopWidth: 0.3, borderColor: 'grey', width:'100%', height: 40, flexDirection: 'row' } ]}>
+              <View style={[container, { padding: 5, } ]}>
+                <Text allowFontScaling={false} style={[ fontSizeResponsive ]} > { this.renderTextFoundBar(this.state.hotels) } </Text>
+              </View>
+            </View>
+          </View>
+        );
+      };
+
+    }
+
+      
 
     
   }

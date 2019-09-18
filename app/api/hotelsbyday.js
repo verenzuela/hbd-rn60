@@ -1,4 +1,5 @@
 import credentials from '../commons/credentials.js';
+import url from '../commons/base_urls.js';
 var base64 = require('base-64');
 
 export default class hotelsbyday {
@@ -7,17 +8,18 @@ export default class hotelsbyday {
 		this.hbd_usr = credentials.hbd_usr;
 		this.hbd_pss = credentials.hbd_pss;
 		this.base64 = base64;
+		this.hbdUrl = url.hbd_url;
 	}
 
-	static getQueryWebURL = (lan='en') => {
-		let baseUrl = 'https://www.hotelsbyday.com/';
+	getQueryWebURL = (lan='en') => {
+		let baseUrl = this.hbdUrl;
 		let url = baseUrl;
 		url += lan;
 		return url; 
 	};
 
-	static getQueryApiURL = (ver) => {
-		let baseUrl = 'https://www.hotelsbyday.com/api/';
+	getQueryApiURL = (ver) => {
+		let baseUrl = this.hbdUrl + 'api/';
 		let url = baseUrl;
 		url += ver;
 		return url; 
@@ -26,10 +28,9 @@ export default class hotelsbyday {
 
 	urlFetch = ( url, options ) => {
 		return fetch( url, options ).then( res => res.json() ).then( res => {
-			return Promise.resolve(	res );
+			return Promise.resolve( { "data":res, "status": "ok", "error":"" }	);
 		}).catch( function(error) {
-			console.warn('Error: ' + error.message);
-			throw error;
+			return { "data":"", "status": "fail", "error": error.message };
 		});
 	};
 
@@ -47,7 +48,7 @@ export default class hotelsbyday {
 
 
 	getCities = ($cityName='') => {
-		let url = hotelsbyday.getQueryWebURL('en');
+		let url = this.getQueryWebURL('en');
 		let options = {};
 
 		if($cityName != ''){
@@ -62,7 +63,7 @@ export default class hotelsbyday {
 
 	getHotelsByCity = (cityName, date) => {
 		
-		let url = hotelsbyday.getQueryApiURL('v3');
+		let url = this.getQueryApiURL('v3');
 		let options = {
 			method: "GET",
 			headers: {
@@ -80,7 +81,7 @@ export default class hotelsbyday {
 
 	getHotelsByGeo = (lat, lon, date) => {
 
-		let url = hotelsbyday.getQueryApiURL('v3');
+		let url = this.getQueryApiURL('v3');
 		let options = {
 			method: "GET",
 			headers: {

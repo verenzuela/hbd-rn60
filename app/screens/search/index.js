@@ -81,10 +81,10 @@ export default class Search extends Component {
     this.hotelsbyday.getCities().then( res => {
       this.setState({
         loading: false,
-        citiesList: res,
+        citiesList: res.data,
       },
         function() {
-          this.arrayholder = res;
+          this.arrayholder = res.data;
         }
       );
     });
