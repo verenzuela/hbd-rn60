@@ -1,8 +1,8 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'hbd' do
-  # Pods for hbd
+target 'HotelsByDay' do
+  # Pods for HotelsByDay
   pod 'React', :path => '../node_modules/react-native/'
   pod 'React-Core', :path => '../node_modules/react-native/React'
   pod 'React-DevSupport', :path => '../node_modules/react-native/React'
@@ -28,7 +28,7 @@ target 'hbd' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   
-  target 'hbdTests' do
+  target 'HotelsByDayTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -42,10 +42,10 @@ target 'hbd' do
   use_native_modules!
 end
 
-target 'hbd-tvOS' do
-  # Pods for hbd-tvOS
+target 'HotelsByDay-tvOS' do
+  # Pods for HotelsByDay-tvOS
 
-  target 'hbd-tvOSTests' do
+  target 'HotelsByDay-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
