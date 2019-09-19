@@ -128,7 +128,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.hotelsbyday"
+        applicationId "com.hbd"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
