@@ -9,6 +9,7 @@ import {
   PermissionsAndroid,
   Platform,
   Image,
+  Alert,
 } from 'react-native';
 import NetInfo from "@react-native-community/netinfo";
 import { WebView } from 'react-native-webview';
@@ -63,26 +64,20 @@ export default class Maps extends Component {
   componentDidMount = () => {
 
     NetInfo.isConnected.addEventListener('change', this.handleConnectionChange);
-
     NetInfo.isConnected.fetch().done(
       (isConnected) => { 
         this.setState({ status: isConnected }, () => {
-          
           if(this.state.status){
             this.validLocationPermission();  
           }else{
             //error conection
-
+            Alert("Network error....");
           }
-
         });
       }
     );
-
   };
 
-
-  
 
   validLocationPermission = () =>{
     var that =this;
@@ -100,16 +95,16 @@ export default class Maps extends Component {
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             that.callLocation(that);
           } else {
-            alert("Permission Denied");
+            Alert("Permission Denied");
           }
         } catch (err) {
-          alert("err",err);
-          console.warn(err)
+          Alert("err",err);
         }
       }
       requestLocationPermission();
     }
   };
+
 
   gpsCordenatesLoad = () => {
     var that =this;
@@ -142,6 +137,10 @@ export default class Maps extends Component {
         that.setState({ currentLongitude:currentLongitude });
         that.setState({ currentLatitude:currentLatitude });
 
+        //test
+        //that.setState({ currentLatitude:'40.8442293' });
+        //that.setState({ currentLongitude:'-73.8647608' });
+        
         //call funtion for gps coordenates
         this.gpsCordenatesUpdate();
 
@@ -160,6 +159,10 @@ export default class Maps extends Component {
       const currentLatitude = JSON.stringify(position.coords.latitude);
       that.setState({ currentLongitude:currentLongitude });
       that.setState({ currentLatitude:currentLatitude });
+
+      //test
+      //that.setState({ currentLatitude:'40.8442293' });
+      //that.setState({ currentLongitude:'-73.8647608' });
       
       //call funtion for gps coordenates
       this.gpsCordenatesLoad();
@@ -177,6 +180,7 @@ export default class Maps extends Component {
           location: nextProps.navigation.state.params.location,
           loading: true,
           coordinates: [],
+          hotels: [],
           mapRef: null,
           currentLocation: null,
           hotelDetail: false,
@@ -192,11 +196,16 @@ export default class Maps extends Component {
           dateArrival: nextProps.navigation.state.params.dateArrival.dateString,
           loading: true,
           coordinates: [],
+          hotels: [],
           mapRef: null,
-          currentLocation: null,
+          //currentLocation: null,
           hotelDetail: false,
         }, () => {
-          this.getHotelsByCity( this.state.location, this.state.dateArrival );
+          if( this.state.location != null ){
+            this.getHotelsByCity( this.state.location, this.state.dateArrival );  
+          }else{
+            this.getHotelsByGeo(this.state.currentLatitude, this.state.currentLongitude, this.state.dateArrival );
+          }        
         });
       }
     }
@@ -206,6 +215,7 @@ export default class Maps extends Component {
         this.setState({ 
           loading: true,
           coordinates: [],
+          hotels: [],
           mapRef: null,
           currentLocation: null,
           location: null,
@@ -270,9 +280,9 @@ export default class Maps extends Component {
   getHotelsByCity = (cityName, date) => {
     this.hotelsbyday.getHotelsByCity(cityName, date).then( res => {
       this.setState({
-        hotels: res.data._embedded.hotels,
-        coordinates: res.data._embedded.lat_lon,
         hotels_count: res.data.hotels_count,
+        coordinates: res.data._embedded.lat_lon,
+        hotels: res.data._embedded.hotels,
       }, () => {
         this.setState({ 
           location: cityName,
@@ -287,20 +297,23 @@ export default class Maps extends Component {
   getHotelsByGeo = (lat, lon, date) => {
     this.hotelsbyday.getHotelsByGeo(lat, lon, date).then( res => {
       this.setState({
-        hotels: res.data._embedded.hotels,
-        coordinates: res.data._embedded.lat_lon,
         hotels_count: res.data.hotels_count,
+        coordinates: res.data._embedded.lat_lon,
+        hotels: res.data._embedded.hotels,
       }, () => {        
-
         this.setState({ 
           location: null,
           loading: false 
         });
-
       });
     });
   };
 
+  _stopLoading(){
+    this.setState({ 
+      loading: false,
+    });
+  };
 
   getCurrentCity = (lat, lon) => {
     //
@@ -381,10 +394,10 @@ export default class Maps extends Component {
   };
   
 
-  renderMarkers = (items) => {
+  renderMarkers = (items,index) => {
     return(      
       <Marker 
-        key={ items.id }
+        key={ index+'-'+items.id }
         coordinate={{ latitude: items.lat , longitude: items.lon }}
       > 
         <View style={{ backgroundColor: '#2E5C65', borderColor: '#f5f5f2', borderWidth: 0.3, padding:2, borderRadius: 4, }} >
@@ -399,8 +412,8 @@ export default class Maps extends Component {
           <View style={{ width: 270 }} >
 
               <Text style={{ fontSize: 14, fontWeight: 'bold' }} >{items.name}</Text>
-              {items.rooms.map( (room,index) => (              
-                <Text key={index} style={{ fontSize: 12 }} >
+              {items.rooms.map( (room,index) => (      
+                <Text key={room.id + '-' + room.rate_type} style={{ fontSize: 12 }} >
                   <Icon color={ room.rate_type=='non-refundable' ? 'red' : '#58543B' } size={14} name={Platform.OS === "ios" ? "ios-card" : "md-card"} />
                   <Text> &nbsp; </Text>
                   <Text >
@@ -421,13 +434,14 @@ export default class Maps extends Component {
 
         return( 
           <MapView
+            loadingEnabled={true}
             provider={provider}
             style={{ alignSelf: 'stretch', height: '100%' }}
             ref={(ref) => { this.state.mapRef = ref }}
             onLayout = {() => this.state.mapRef.fitToCoordinates(this.state.coordinates, { edgePadding: { top: 20, right: 20, bottom: 20, left: 20 }, animated: false })}
           >
-            {hotels.map(items => (
-              this.renderMarkers(items)
+            {hotels.map( (items,index) => (
+              this.renderMarkers(items,index)
             ))}
           </MapView>
         )
@@ -436,6 +450,7 @@ export default class Maps extends Component {
     }else{
       return(
         <MapView
+          loadingEnabled={true}
           provider={provider}
           style={{ alignSelf: 'stretch', height: '100%' }}
           initialRegion={{
@@ -445,8 +460,8 @@ export default class Maps extends Component {
             longitudeDelta: this.state.longitudeDelta,
           }}
         > 
-          {hotels.map(item => (
-            this.renderMarkers(item)
+          {hotels.map( (items,index) => (
+            this.renderMarkers(items,index)
           ))}
         </MapView>
       )

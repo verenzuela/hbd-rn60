@@ -114,9 +114,6 @@ class App extends Component {
             <Text style={[ fontColorGreen, { fontSize: 35, }]} >Enjoy your day-stay!</Text>  
           </View>
           
-
-          
-
         </View>
       );
     };

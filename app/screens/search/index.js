@@ -58,6 +58,7 @@ export default class Search extends Component {
   currentlocation = () => {
     this.props.navigation.navigate('Home', {
       currentLocation: 'get',
+      location: false,
     });
   };
 
@@ -65,7 +66,7 @@ export default class Search extends Component {
     if(cityName!=null){
       this.props.navigation.navigate('Home', {
         location: cityName,
-        currentLocation: '',
+        currentLocation: false,
       });
     }
   };
@@ -73,7 +74,8 @@ export default class Search extends Component {
   changeDate = (date) => {
     this.props.navigation.navigate('Home', {
       dateArrival: date,
-      currentLocation: '',
+      currentLocation: false,
+      location: false,
     });
   };
 

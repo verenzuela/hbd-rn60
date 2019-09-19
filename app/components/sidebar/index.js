@@ -138,6 +138,7 @@ export default class Sidebar extends Component {
           
         </ScrollView>
 
+        {/*
         <View style={sidebarFooterCont}>
           <View style={sidebarFooterIcons}>
             <Icon style={[ iconColor, sidebarIconSize, { marginRight:10 }]} name="logo-facebook" />
@@ -147,7 +148,7 @@ export default class Sidebar extends Component {
             <Icon style={[ iconColor, sidebarIconSize, { marginRight:10 }]} name="logo-youtube" />
           </View>
         </View>
-        
+        */}
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <Text></Text>
         </View>
