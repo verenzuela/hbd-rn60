@@ -1,8 +1,8 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'HBD' do
-  # Pods for HBD
+target 'hbd' do
+  # Pods for hbd
   pod 'React', :path => '../node_modules/react-native/'
   pod 'React-Core', :path => '../node_modules/react-native/React'
   pod 'React-DevSupport', :path => '../node_modules/react-native/React'
@@ -28,7 +28,7 @@ target 'HBD' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   
-  target 'HBDTests' do
+  target 'hbdTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -42,10 +42,10 @@ target 'HBD' do
   use_native_modules!
 end
 
-target 'HBD-tvOS' do
-  # Pods for HBD-tvOS
+target 'hbd-tvOS' do
+  # Pods for hbd-tvOS
 
-  target 'HBD-tvOSTests' do
+  target 'hbd-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

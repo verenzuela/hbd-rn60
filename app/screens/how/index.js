@@ -7,7 +7,7 @@ import url from '../../commons/base_urls.js';
 export default class How extends Component {
   constructor(props) {
     super(props);
-    this.hbdUrl = url.hbd_url;
+    this.hbdUrl = url.hbd_url_demo;
     this.state = {
       visible: true,
     };

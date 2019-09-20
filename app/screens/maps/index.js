@@ -17,6 +17,7 @@ import Geolocation from '@react-native-community/geolocation';
 import { NavigationActions } from "react-navigation";
 import MapView, { Marker, PROVIDER_GOOGLE, Callout } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import hotelsbydayApi from '../../api/hotelsbyday.js';
 import googlemaps from '../../api/googlemaps.js';
 import Styles from '../../commons/styles';
@@ -33,6 +34,10 @@ export default class Maps extends Component {
     this.hotelsbyday = new hotelsbydayApi();
     this.googlemaps = new googlemaps();
     this.state = {
+      initialPosition: 'unknown',
+      lastPosition: 'unknown',
+      initialGeo: [],
+      lastGeo: [],
       status: false,
       networkError: false,
       location: this.props.location,
@@ -61,8 +66,7 @@ export default class Maps extends Component {
   };
 
 
-  componentDidMount = () => {
-
+  componentDidMount(){
     NetInfo.isConnected.addEventListener('change', this.handleConnectionChange);
     NetInfo.isConnected.fetch().done(
       (isConnected) => { 
@@ -76,6 +80,41 @@ export default class Maps extends Component {
         });
       }
     );
+  };
+
+  componentWillUnmount() {
+    this.hbdUrl = null;
+    this.hotelsbyday = null;
+    this.googlemaps = null;
+
+    NetInfo.isConnected.removeEventListener('change', this.handleConnectionChange);
+    
+    this.watchID != null && Geolocation.clearWatch(this.watchID);
+    
+    this.setState({ 
+      initialPosition: 'unknown',
+      lastPosition: 'unknown',
+      initialGeo: [],
+      lastGeo: [],
+      status: false,
+      networkError: false,
+      location: null,
+      dateArrival: null,
+      hotels: [],
+      hotels_count: 0,
+      loading: true,
+      coordinates: [],
+      mapRef: null,
+      currentLatitude: 'unknown',
+      currentLongitude: 'unknown',
+      gpsError: false,
+      gpsErrorMsg: null,
+      currentLocation: null,
+      hotelDetail: false,  
+      hotelDetailUrl: '',
+      latitudeDelta: 0.00922,
+      longitudeDelta: 0.00421,
+    })
   };
 
 
@@ -106,75 +145,64 @@ export default class Maps extends Component {
   };
 
 
-  gpsCordenatesLoad = () => {
-    var that =this;
-    if( this.state.currentLatitude != 'unknown' && this.state.currentLongitude != 'unknown' ){
-      this.getCurrentCity(this.state.currentLatitude, this.state.currentLongitude );
-      //this.getCurrentCity('40.8442293','-73.8647608');
-    }else{
-      that.callLocation(that);
-    }
-  };
-
-
-  gpsCordenatesUpdate = () => {
-    var that =this;
-    if( this.state.currentLatitude != 'unknown' && this.state.currentLongitude != 'unknown' ){
-      this.getCurrentCity(this.state.currentLatitude, this.state.currentLongitude );
-      //this.getCurrentCity('40.8442293','-73.8647608');
-    }else{
-      that.callLocation(that);
-    }
-  };
-
-
   callLocation = (that) => {
-    
     Geolocation.getCurrentPosition(
-      (position) => {
-        const currentLongitude = JSON.stringify(position.coords.longitude);
-        const currentLatitude = JSON.stringify(position.coords.latitude);
-        that.setState({ currentLongitude:currentLongitude });
-        that.setState({ currentLatitude:currentLatitude });
-
-        //test
-        //that.setState({ currentLatitude:'40.8442293' });
-        //that.setState({ currentLongitude:'-73.8647608' });
+      position => {
+        const initialPosition = JSON.stringify(position.coords);
         
-        //call funtion for gps coordenates
-        this.gpsCordenatesUpdate();
-
+        this.setState({
+          initialPosition: initialPosition,
+          initialGeo: position.coords,
+        }, () => {
+          this._loadData();
+        });
       },
-      (error) => {
-        that.setState({ gpsError: true });
-        that.setState({ gpsErrorMsg: error.message });
-        //that.setState({ networkError: true });
-        //that.setState({ loading: false });          
-      },
-      { enableHighAccuracy: true, timeout: 5000, maximumAge: 10000 }
+      error => error = 1, //Alert.alert('Error', JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
     );
-    
-    that.watchID = Geolocation.watchPosition((position) => {
-      const currentLongitude = JSON.stringify(position.coords.longitude);
-      const currentLatitude = JSON.stringify(position.coords.latitude);
-      that.setState({ currentLongitude:currentLongitude });
-      that.setState({ currentLatitude:currentLatitude });
-
-      //test
-      //that.setState({ currentLatitude:'40.8442293' });
-      //that.setState({ currentLongitude:'-73.8647608' });
-      
-      //call funtion for gps coordenates
-      this.gpsCordenatesLoad();
-
+    this.watchID = Geolocation.watchPosition(position => {
+      const lastPosition = JSON.stringify(position.coords)
+      this.setState({
+        lastPosition: lastPosition,
+        lastGeo: position.coords,
+      }, () => {
+        this._loadData();
+      });
     });
+  };
+
+
+  _loadData = () => {
+    if( this.state.initialPosition == 'unknown' && this.state.lastPosition == 'unknown' ){
+      this.setState({ 
+        //loading: false,
+      });
+    }else{
+      if( this.state.initialPosition != 'unknown' && this.state.lastPosition == 'unknown' ){
+        this.setState({ 
+          geodata: 'initial',
+          currentLatitude: JSON.stringify(this.state.initialGeo.latitude),
+          currentLongitude: JSON.stringify(this.state.initialGeo.longitude),
+        }, () => {
+          this.getCurrentCity(this.state.currentLatitude, this.state.currentLongitude );
+        });
+      }
+      if( this.state.initialPosition == 'unknown' && this.state.lastPosition != 'unknown' ){
+        this.setState({ 
+          geodata: 'last',
+          currentLatitude: JSON.stringify(this.state.lastGeo.latitude),
+          currentLongitude: JSON.stringify(this.state.lastGeo.longitude),
+        }, () => {
+          this.getCurrentCity(this.state.currentLatitude, this.state.currentLongitude );
+        });
+      }
+    }
   };
 
 
   componentWillReceiveProps = (nextProps) => {
 
     if(nextProps.navigation.state.params.location){
-
       if( nextProps.navigation.state.params.location != this.state.location ){
         this.setState({ 
           location: nextProps.navigation.state.params.location,
@@ -231,37 +259,8 @@ export default class Maps extends Component {
   };
 
 
-  componentWillUnmount() {
-    
-    NetInfo.isConnected.removeEventListener('change', this.handleConnectionChange);
-
-    Geolocation.clearWatch(this.watchID);
-
-    this.setState({ 
-     status: false,
-      networkError: false,
-      location: null,
-      dateArrival: null,
-      hotels: [],
-      hotels_count: 0,
-      loading: true,
-      coordinates: [],
-      mapRef: null,
-      currentLatitude: 'unknown',
-      currentLongitude: 'unknown',
-      gpsError: false,
-      gpsErrorMsg: null,
-      currentLocation: null,
-      hotelDetail: false,  
-      hotelDetailUrl: '',
-      latitudeDelta: 0.00922,
-      longitudeDelta: 0.00421,
-    })
-
-  };
-
   handleConnectionChange = (isConnected) => {
-        this.setState({ status: isConnected });
+    this.setState({ status: isConnected });
   };
 
   onRegionChange = (region) => {
@@ -309,14 +308,8 @@ export default class Maps extends Component {
     });
   };
 
-  _stopLoading(){
-    this.setState({ 
-      loading: false,
-    });
-  };
 
   getCurrentCity = (lat, lon) => {
-    //
     this.googlemaps.getCityByGeoLocation(lat, lon).then( res => {
       if(res.data == ''){
         if(res.error == 'Network request failed'){
@@ -332,7 +325,6 @@ export default class Maps extends Component {
         });
       }  
     });
-    
   };
 
 
@@ -346,29 +338,23 @@ export default class Maps extends Component {
 
 
   getLocationName = ( prefix=true ) => {
-
     if(this.state.location==null && this.state.currentLocation==null){
       return `Current Location`;
     }else{
-      
       if(this.state.location==null && this.state.currentLocation!=null) {
         //return `${ this.state.currentLocation }`;
         return `Current Location`;
       }else{
         return (prefix) ? `City: ${ this.state.location }` : `${ this.state.location }`;
       }
-    
     };
-    
   };
 
 
   goToHotelDescription = ( hotelId ) => {
-
     this.props.navigation.navigate('hotelDetail', {
       hotelDetailUrl: `${this.hbdUrl}en/hotels/1/1/${hotelId}?inapp=true&reactApp=1&date=${moment( this.state.dateArrival ).format('MMM D, Y')}`,
     });
-    
   }
 
 
@@ -414,7 +400,7 @@ export default class Maps extends Component {
               <Text style={{ fontSize: 14, fontWeight: 'bold' }} >{items.name}</Text>
               {items.rooms.map( (room,index) => (      
                 <Text key={room.id + '-' + room.rate_type} style={{ fontSize: 12 }} >
-                  <Icon color={ room.rate_type=='non-refundable' ? 'red' : '#58543B' } size={14} name={Platform.OS === "ios" ? "ios-card" : "md-card"} />
+                  <MaterialCommunityIcons color={ room.rate_type=='non-refundable' ? 'red' : '#58543B' } size={14} name={ room.rate_type=='non-refundable' ? "credit-card" : "credit-card-off"} />
                   <Text> &nbsp; </Text>
                   <Text >
                     {`${room.name} at ${room.discounted_price}${items.currency}. From ${moment(room.offer_date_from).format('hA')} - ${moment(room.offer_date_to).format('hA')} `}  
@@ -431,7 +417,6 @@ export default class Maps extends Component {
 
   renderMap = ( hotels, provider ) => {
     if( this.state.hotels_count > 1 ){
-
         return( 
           <MapView
             loadingEnabled={true}
@@ -445,8 +430,6 @@ export default class Maps extends Component {
             ))}
           </MapView>
         )
-
-
     }else{
       return(
         <MapView
@@ -480,17 +463,7 @@ export default class Maps extends Component {
       )
     }
   };
-
-
-  ActivityIndicatorLoadingView = () => {
-    return (
-      <ActivityIndicator
-        color="#009688"
-        style = {{position: 'absolute',left: 0,right: 0, top: 0,bottom: 0,alignItems: 'center',justifyContent: 'center'}}
-      />
-    );
-  };
-
+  
 
   render() {
   

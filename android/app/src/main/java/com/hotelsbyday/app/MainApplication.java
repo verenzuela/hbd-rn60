@@ -1,4 +1,4 @@
-package com.hbd;
+package com.hotelsbyday.app;
 
 import android.app.Application;
 import android.util.Log;
