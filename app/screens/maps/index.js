@@ -4,12 +4,15 @@ import {
   View,
   ActivityIndicator,
   FlatList,
+  SafeAreaView,
+  ScrollView,
   TouchableOpacity,
   StyleSheet,
   PermissionsAndroid,
   Platform,
   Image,
   Alert,
+  Switch,
 } from 'react-native';
 import NetInfo from "@react-native-community/netinfo";
 import { WebView } from 'react-native-webview';
@@ -24,6 +27,7 @@ import Styles from '../../commons/styles';
 import { YellowBox } from 'react-native';
 import moment from 'moment';
 import url from '../../commons/base_urls.js';
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 export default class Maps extends Component {
 
@@ -56,6 +60,7 @@ export default class Maps extends Component {
       hotelDetailUrl: '',
       latitudeDelta: 0.00922,
       longitudeDelta: 0.00421,
+      switchValue:false,
     };
 
     YellowBox.ignoreWarnings([
@@ -65,6 +70,9 @@ export default class Maps extends Component {
 
   };
 
+  toggleSwitch = (value) => {
+      this.setState({switchValue: value})
+  }
 
   componentDidMount(){
     NetInfo.isConnected.addEventListener('change', this.handleConnectionChange);
@@ -330,7 +338,7 @@ export default class Maps extends Component {
 
   getSearchMsg = () => {
     if(this.state.location==null){
-      return 'Getting location and searching hotels, wait...';
+      return 'Searching for nearby hotels, please hang tight!';
     }else{
       return 'Searching available hotels, please wait...';
     }
@@ -353,7 +361,7 @@ export default class Maps extends Component {
 
   goToHotelDescription = ( hotelId ) => {
     this.props.navigation.navigate('hotelDetail', {
-      hotelDetailUrl: `${this.hbdUrl}en/hotels/1/1/${hotelId}?inapp=true&reactApp=1&date=${moment( this.state.dateArrival ).format('MMM D, Y')}`,
+      hotelDetailUrl: `${this.hbdUrl}en/hotels/1/1/${hotelId}?inapp=true&soapp=${ (Platform.OS==='ios') ? 'ios' : 'android' }&reactApp=1&date=${moment( this.state.dateArrival ).format('MMM D, Y')}`,
     });
   }
 
@@ -374,6 +382,18 @@ export default class Maps extends Component {
               <Text allowFontScaling={false} style={[ mapsSearchbuttonsTxt, fontColorGreen ]}> { moment( dateArrival ).format('MMM D, Y')}  </Text>
             </View>
           </TouchableOpacity>
+        </View>
+        <View style={[container ]}>
+          <View style={[ mapsSearchbuttons, ]} >
+            <View style={[container, centerAll, { flexDirection: 'row' }  ]}>
+              <Text>List</Text>
+              <Switch
+                onValueChange = {this.toggleSwitch}
+                value = {this.state.switchValue}
+              />
+              <Text>Map</Text>
+            </View>
+          </View>
         </View>
       </View>
     )
@@ -451,6 +471,66 @@ export default class Maps extends Component {
     }
   };
 
+  getImage = (urlImage) => {
+    return imageSource = urlImage.replace('{x}', '200').replace('{y}', '200');
+  };
+
+  renderList = ( hotels, container, centerAll, borderColor, fontColorGreen ) => {
+    return( 
+
+      hotels.map( (items,index) => (
+        
+        <View key={ index } style={[ centerAll, borderColor, { width:'97%', height: 100, flexDirection: 'row', margin:5, borderWidth:1, } ]}>
+          <View style={[ container, centerAll ]}>
+
+            <Image
+              style={{ height: '100%', width: '100%', resizeMode: 'cover' }}
+              source={{uri: `${this.getImage(items.image_url)}` }}
+              
+            />
+
+          </View>
+          <View style={{ flex:2 }}>
+            <Text style={[ fontColorGreen, { fontSize: RFPercentage(1.8), marginLeft: 5, fontWeight: 'bold', }]} >{ items.name }</Text>
+            <Text style={[ fontColorGreen, { fontSize: RFPercentage(1.5), marginLeft: 5, }]}>{ items.address_line_1 }</Text>
+            <Text style={[ fontColorGreen, { fontSize: RFPercentage(1.5), marginLeft: 5, }]}>{ items.address_line_2 }</Text>
+          </View>
+          
+          <View style={[ container, centerAll ]}>
+            <Text style={[ centerAll, fontColorGreen, { textAlign: 'center', fontSize: RFPercentage(1.6) }]} >{` ${moment(items.offer_date_time_from).format('hA')} - ${moment(items.offer_date_time_to).format('hA')} `}</Text>
+          </View>
+          
+          <View style={[ container, centerAll ]}>
+          <Text>{` From: `}</Text>
+            <Text style={[ fontColorGreen ]}>{` ${items.discounted_price} ${items.currency} `}</Text>
+
+            <TouchableOpacity onPress={() => this.goToHotelDescription(items.id)}
+              style={{ 
+                  width:70, 
+                  height:30, 
+                  borderWidth:1, 
+                  marginTop: 5, 
+                  borderRadius:2, 
+                  backgroundColor:'#f0c14b',
+                  borderColor: '#846a29', 
+                }}
+            >
+              <View style={[ container, centerAll ]}>
+                <Text>
+                  Select
+                </Text>  
+              </View>
+            </TouchableOpacity>
+
+          </View>
+        </View>
+
+      ))
+
+    )
+  };
+
+
 
   renderTextFoundBar = ( hotels ) => {
     if( this.state.hotels_count > 1 ){
@@ -511,19 +591,47 @@ export default class Maps extends Component {
           </View>
         );
       }else{
-        return (
-          <View style={[container]}>
-            { this.renderBarButtons( this.state.dateArrival, container, centerAll, backgroundColor, mapsSearchbuttons, fontColorGreen, mapsSearchbuttonsTxt ) }
+
+        if(this.state.switchValue){
+          return (
             <View style={[container]}>
-              { this.renderMap( this.state.hotels, PROVIDER_GOOGLE  ) }
-            </View>
-            <View style={[ centerAll, { borderTopWidth: 0.3, borderColor: 'grey', width:'100%', height: 40, flexDirection: 'row' } ]}>
-              <View style={[container, { padding: 5, } ]}>
-                <Text allowFontScaling={false} style={[ fontSizeResponsive ]} > { this.renderTextFoundBar(this.state.hotels) } </Text>
+              { this.renderBarButtons( this.state.dateArrival, container, centerAll, backgroundColor, mapsSearchbuttons, fontColorGreen, mapsSearchbuttonsTxt ) }
+              <View style={[container]}>
+                { this.renderMap( this.state.hotels, PROVIDER_GOOGLE  ) }
+              </View>
+              <View style={[ centerAll, { borderTopWidth: 0.3, borderColor: 'grey', width:'100%', height: 40, flexDirection: 'row' } ]}>
+                <View style={[container, { padding: 5, } ]}>
+                  <Text allowFontScaling={false} style={[ fontSizeResponsive ]} > { this.renderTextFoundBar(this.state.hotels) } </Text>
+                </View>
               </View>
             </View>
-          </View>
-        );
+          );  
+        }else{
+          return (
+            <View style={[container]}>
+              { this.renderBarButtons( this.state.dateArrival, container, centerAll, backgroundColor, mapsSearchbuttons, fontColorGreen, mapsSearchbuttonsTxt ) }
+              <View style={[container]}>
+
+                <SafeAreaView style={{ flex: 1, }}>
+                  <ScrollView>
+                    
+                    { this.renderList( this.state.hotels, container, centerAll, borderColor ) }  
+                    
+                  </ScrollView>
+                </SafeAreaView>
+
+                
+              </View>
+              <View style={[ centerAll, { borderTopWidth: 0.3, borderColor: 'grey', width:'100%', height: 40, flexDirection: 'row' } ]}>
+                <View style={[container, { padding: 5, } ]}>
+                  <Text allowFontScaling={false} style={[ fontSizeResponsive ]} > { this.renderTextFoundBar(this.state.hotels) } </Text>
+                </View>
+              </View>
+            </View>
+          );
+        }
+
+        
       };
 
     }

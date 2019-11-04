@@ -194,9 +194,50 @@ const HomeTabNavigator = createBottomTabNavigator(
   }
 );
 
+
 const HomeStackNavigator = createStackNavigator(
   { 
-    HomeTabNavigator:  { screen: HomeTabNavigator },
+    //HomeTabNavigator:  { screen: HomeTabNavigator },
+    Home: { 
+      screen: props => <Maps {...props} location={null} dateArrival={date.format('YYYY-MM-DD')} />,
+      navigationOptions: () => ({
+        title: 'Home',
+        headerBackTitle: null,
+        headerStyle: { backgroundColor: '#f5f5f2' },
+        headerTintColor: '#2E5C65',
+      }),
+    },
+
+    Search: { 
+      screen : props => <Search {...props} changeType={'city'} />,
+      navigationOptions: () => ({
+        title: 'Change City',
+        headerBackTitle: null,
+        headerStyle: { backgroundColor: '#f5f5f2' },
+        headerTintColor: '#2E5C65',
+      }),
+    },
+
+    Date: { 
+      screen: props => <Search {...props} changeType={'date'} />,
+      navigationOptions: () => ({
+        title: 'Change Date',
+        headerBackTitle: null,
+        headerStyle: { backgroundColor: '#f5f5f2' },
+        headerTintColor: '#2E5C65',
+      }),
+    },
+
+    How: { 
+      screen: HowItWorks,
+      navigationOptions: () => ({
+        title: 'How It Works',
+        headerBackTitle: null,
+        headerStyle: { backgroundColor: '#f5f5f2' },
+        headerTintColor: '#2E5C65',
+      }),
+    },
+
     support: { 
       screen: Support,
       navigationOptions: () => ({
