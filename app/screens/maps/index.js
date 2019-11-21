@@ -29,6 +29,10 @@ import moment from 'moment';
 import url from '../../commons/base_urls.js';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
+import {
+  PacmanIndicator
+} from 'react-native-indicators';
+
 export default class Maps extends Component {
 
   constructor(props) {
@@ -564,8 +568,8 @@ export default class Maps extends Component {
     if(this.state.loading){
       return (
         <View style={[container, centerAll]}>
-          <Text>{ this.getSearchMsg() }</Text>
-          <ActivityIndicator />
+          <PacmanIndicator color='#2E5C65' size={60}  />
+          {/*<Text>{ this.getSearchMsg() }</Text>*/}
         </View>
       );
     };
