@@ -14,6 +14,7 @@ import {
   Alert,
   Switch,
 } from 'react-native';
+import { BackHandler, Dimensions, Animated } from 'react-native';
 import NetInfo from "@react-native-community/netinfo";
 import { WebView } from 'react-native-webview';
 import Geolocation from '@react-native-community/geolocation';
@@ -33,10 +34,19 @@ import {
   PacmanIndicator
 } from 'react-native-indicators';
 
+let {width, height} = Dimensions.get('window');
+
 export default class Maps extends Component {
+
+  state = {
+    backClickCount: 0
+  };
 
   constructor(props) {
     super(props);
+
+    this.handleBackButton = this.handleBackButton.bind(this);
+    this.springValue = new Animated.Value(600);
 
     this.hbdUrl = url.hbd_url;
     this.hotelsbyday = new hotelsbydayApi();
@@ -79,6 +89,9 @@ export default class Maps extends Component {
   }
 
   componentDidMount(){
+
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+
     NetInfo.isConnected.addEventListener('change', this.handleConnectionChange);
     NetInfo.isConnected.fetch().done(
       (isConnected) => { 
@@ -95,6 +108,9 @@ export default class Maps extends Component {
   };
 
   componentWillUnmount() {
+
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+
     this.hbdUrl = null;
     this.hotelsbyday = null;
     this.googlemaps = null;
@@ -128,6 +144,38 @@ export default class Maps extends Component {
       longitudeDelta: 0.00421,
     })
   };
+
+  
+  _spring() {
+    this.setState({backClickCount: 1}, () => {
+      Animated.sequence([
+        Animated.spring(
+          this.springValue,
+          {
+            toValue: -.15 * height,
+            friction: 10,
+            duration: 300,
+            useNativeDriver: true,
+          }
+        ),
+        Animated.timing(
+          this.springValue,
+          {
+            toValue: 100,
+            duration: 1500,
+            useNativeDriver: true,
+          }
+        ),
+      ]).start(() => {
+          this.setState({backClickCount: 0});
+      });
+    });
+  };
+
+  handleBackButton = () => {
+    this._spring();
+    return true;
+  } 
 
 
   validLocationPermission = () =>{
@@ -536,6 +584,21 @@ export default class Maps extends Component {
 
 
 
+  renderExitText = () => {
+    return (
+      <Animated.View style={[styles.animatedView, {transform: [{translateY: this.springValue}]}]}>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => BackHandler.exitApp()}
+        >
+          <Text style={styles.exitText}>Tap here to exit the app</Text>
+        </TouchableOpacity>
+      </Animated.View>
+    );
+  }
+
+
+
   renderTextFoundBar = ( hotels ) => {
     if( this.state.hotels_count > 1 ){
       return(
@@ -581,6 +644,9 @@ export default class Maps extends Component {
           <View style={[container, centerAll]}>
             <Text style={{ margin:20, }}>Network request failed.</Text>
           </View>
+
+          { this.renderExitText() }
+
         </View>
       );
     }else{
@@ -590,8 +656,12 @@ export default class Maps extends Component {
           <View style={[container, centerAll]}>
             { this.renderBarButtons( this.state.dateArrival, container, centerAll, backgroundColor, mapsSearchbuttons, fontColorGreen, mapsSearchbuttonsTxt ) }
             <View style={[container, centerAll]}>
-              <Text style={{ margin:20, }}>No hotels found, please choose another location or change your arrival date...</Text>
+              <Text >No hotels found, please choose another location</Text>
+              <Text >or change your arrival date...</Text>
             </View>
+
+            { this.renderExitText() }
+
           </View>
         );
       }else{
@@ -608,6 +678,9 @@ export default class Maps extends Component {
                   <Text allowFontScaling={false} style={[ fontSizeResponsive ]} > { this.renderTextFoundBar(this.state.hotels) } </Text>
                 </View>
               </View>
+
+              { this.renderExitText() }
+
             </View>
           );  
         }else{
@@ -631,6 +704,9 @@ export default class Maps extends Component {
                   <Text allowFontScaling={false} style={[ fontSizeResponsive ]} > { this.renderTextFoundBar(this.state.hotels) } </Text>
                 </View>
               </View>
+
+              { this.renderExitText() }
+
             </View>
           );
         }
@@ -647,3 +723,24 @@ export default class Maps extends Component {
 
 
 }
+
+
+
+const styles = {
+    animatedView: {
+        width,
+        backgroundColor: "#0a5386",
+        elevation: 2,
+        position: "absolute",
+        bottom: 0,
+        padding: 10,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+    },
+    exitText: {
+        color: "yellow",
+        paddingHorizontal: 10,
+        paddingVertical: 3
+    }
+};

@@ -8,6 +8,7 @@ import {
   Alert, 
   TouchableOpacity,
 } from 'react-native';
+import { BackHandler } from 'react-native';
 import Styles from '../../commons/styles';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import hotelsbydayApi from '../../api/hotelsbyday.js';
@@ -34,6 +35,7 @@ export default class Search extends Component {
 
   constructor(props) {
     super(props);
+    this.handleBackButton = this.handleBackButton.bind(this);
     this.hotelsbyday = new hotelsbydayApi();
     this.state = {
       loading: false,
@@ -46,6 +48,8 @@ export default class Search extends Component {
   }
 
   componentDidMount(){
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+
     if(this.state.changeType == 'city'){
       this.setState({
         loading: true,
@@ -54,6 +58,15 @@ export default class Search extends Component {
       });
     }
   };
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    this.props.navigation.navigate('Home');
+    return true;
+  }
 
   currentlocation = () => {
     this.props.navigation.navigate('Home', {

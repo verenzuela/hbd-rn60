@@ -13,11 +13,17 @@ export default StyleSheet.create({
 	iconColor: {
 		color: '#2E5C65',
 	},
+	iconColorWhite:{
+		color: '#fff',
+	},
 	backgroundColor: {
 		backgroundColor: '#2E5C65',
 	},
 	backgroundColorLight: {
 		backgroundColor: '#f5f5f2',
+	},
+	borderWidth: {
+		borderWidth:1,
 	},
 	borderColor: {
 		borderColor:'#2E5C65',
@@ -26,7 +32,16 @@ export default StyleSheet.create({
 		color: '#2E5C65',
 	},
 	fontSizeResponsive: {
-		fontSize: 0.030*width
+		fontSize: 0.030*width,
+	},
+	bgColorBronze: {
+		backgroundColor: '#CB7740',
+	},
+	bgColorSilver: {
+		backgroundColor: '#C0C0C0',
+	},
+	bgColorGold: {
+		backgroundColor: '#EDB402',
 	},
 
 
@@ -133,5 +148,148 @@ export default StyleSheet.create({
 
 /**** END CSS SEARCH ****/
 /************************/
+
+
+	linkedinButton: {
+		height:35, 
+		backgroundColor: '#1d89e4', 
+		marginLeft: 5, 
+		marginRight: 5, 
+		marginTop:1, 
+		borderWidth:1, 
+		borderRadius:3, 
+		borderColor:'#888',
+	},
+	linkedinButtonTxt: {
+		fontSize: 0.033*width,
+		padding: 2,
+		color:'#fff', 
+		fontWeight:'bold',
+	},
+
+	googleButton: {
+		height:35, 
+		backgroundColor: '#fff', 
+		marginLeft: 5, 
+		marginRight: 5, 
+		marginTop:1, 
+		borderWidth:1, 
+		borderRadius:3, 
+		borderColor:'#444',
+	},
+	googleButtonTxt: {
+		fontSize: 0.033*width,
+		padding: 2,
+		color: '#444', 
+		fontWeight:'bold',
+	},
+
+	socialButtonIcon: {
+		paddingLeft: 5,
+		width: 35, 
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+
+	inputLogin:{
+		borderWidth:1,
+		borderColor:'#2E5C65',
+		height: 40,
+		width: '48.5%',
+	},
+
+	Or:{
+		borderWidth:1,
+		borderColor:'#2E5C65',
+		color: '#2E5C65',
+		paddingLeft: 5,
+		paddingRight: 3,
+		borderRadius:20
+	}, 
+
+	loginButton:{
+		borderWidth:1,
+		borderColor:'#2E5C65',
+		height: 40, 
+		backgroundColor: '#f5f5f2', 
+		marginLeft: 5, 
+		marginRight: 5,
+		marginTop:3,
+		height:35
+	},
+
+	loginButtonTxt:{
+		fontSize: 0.033*width,
+		padding: 2,
+		color: '#2E5C65',
+	},
+
+
+	/*DASHBOARD*/
+
+	tabBar: {
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    height: 60,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+  },
+  tabBarItem: {
+  	height: 60,
+  	width: 80, 
+    borderLeftWidth: 1, 
+    //borderRightWidth: 1, 
+    paddingLeft: 5, 
+    paddingRight:5 
+  },
+
+  tabBarItemSelected: {
+  	height: 60,
+  	width: 80, 
+    borderLeftWidth: 1,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor:'#2E5C65',
+    backgroundColor: '#2E5C65',
+    //borderRightWidth: 1, 
+    paddingLeft: 5, 
+    paddingRight:5 
+  },
+
+  tapContent: {
+  	padding:10, 
+  	justifyContent: 'flex-start', 
+  	alignItems: 'flex-start',
+  },
+  tapTitle: {
+  	marginBottom: 20,
+  	fontWeight:'bold',
+  	fontSize: 0.060*width
+  },
+
+  tapLineText: {
+  	flexDirection:'row', 
+  	flexWrap:'wrap', 
+  	marginBottom: 10,
+  	alignItems: 'center',
+  },
+
+  tapTextPill:{
+  	fontWeight:'bold', 
+  	borderWidth:1, 
+  	borderRadius:10, 
+  	padding:5, 
+  	textAlign:'center', 
+  	color:'#fff'
+  },
+
+  profileInput: {
+    fontSize: 16,
+    height: 40,
+    borderColor: 'black',
+    marginBottom: 25,
+	},
+
     
 })

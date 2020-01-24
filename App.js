@@ -31,6 +31,8 @@ import HowItWorks from './app/screens/how';
 import About from './app/screens/about';
 import HelpDesk from './app/screens/helpDesk';
 import HotelDetail from './app/screens/hotelDetail';
+import Login from './app/screens/login';
+import Profile from './app/screens/profile';
 
 import moment from 'moment';
 
@@ -198,6 +200,12 @@ const HomeTabNavigator = createBottomTabNavigator(
 const HomeStackNavigator = createStackNavigator(
   { 
     //HomeTabNavigator:  { screen: HomeTabNavigator },
+    login: { 
+      screen: props => <Login {...props} login={false} />,
+      navigationOptions: () => ({
+        header: null,
+      })
+    },
     Home: { 
       screen: props => <Maps {...props} location={null} dateArrival={date.format('YYYY-MM-DD')} />,
       navigationOptions: () => ({
@@ -269,6 +277,15 @@ const HomeStackNavigator = createStackNavigator(
       screen: HotelDetail,
       navigationOptions: () => ({
         title: 'HotelsByDay',
+        headerBackTitle: null,
+        headerStyle: { backgroundColor: '#f5f5f2' },
+        headerTintColor: '#2E5C65',
+      })
+    },
+    profile: { 
+      screen: Profile,
+      navigationOptions: () => ({
+        title: 'Loyalty Dashboard',
         headerBackTitle: null,
         headerStyle: { backgroundColor: '#f5f5f2' },
         headerTintColor: '#2E5C65',

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "908843177748",
+    "firebase_url": "https://hotelsbyday-app.firebaseio.com",
+    "project_id": "hotelsbyday-app",
+    "storage_bucket": "hotelsbyday-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908843177748:android:cdaa01a2d60d2c3d0c9401",
+        "android_client_info": {
+          "package_name": "com.hotelsbyday.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "908843177748-nc73fc2ihdr78f9hus0sroqf273q4hkg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hotelsbyday.app",
+            "certificate_hash": "eccea4ab5f6910c04a674c13d1fe59585c31b8f8"
+          }
+        },
+        {
+          "client_id": "908843177748-361uir7i1gdcd2ioj5tj3cfjs2supcjq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSJNYK2PHjKFbDNaXgjvqnm6aZ-mzBtfg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "908843177748-361uir7i1gdcd2ioj5tj3cfjs2supcjq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

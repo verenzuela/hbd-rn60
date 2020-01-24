@@ -7,7 +7,8 @@ import {
   LayoutAnimation, 
   UIManager, 
   Platform, 
-  Image 
+  Image,
+  AsyncStorage,
 } from 'react-native';
 import { NavigationActions } from "react-navigation";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -26,24 +27,29 @@ export default class Sidebar extends Component {
     };
   }
 
+
+  _storeData = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (error) {
+      // Error saving data
+    };
+  };
+
+
   navigateToScreen = route => () => {
     const navigateAction = NavigationActions.navigate({
       routeName: route,
     });
     this.props.navigation.dispatch(navigateAction);
   };
+
 
   componentDidMount(){
 
   };
-
-  navigateToScreen = route => () => {
-    const navigateAction = NavigationActions.navigate({
-      routeName: route,
-    });
-    this.props.navigation.dispatch(navigateAction);
-  };
-
+  
+  
   render() {
 
     const {
@@ -124,6 +130,16 @@ export default class Sidebar extends Component {
               <Text style={sidebarNavBarItemTxt}>How It Works</Text>
             </View>
           </TouchableOpacity>
+
+          <TouchableOpacity activeOpacity={0.8} style={sidebarNavBarItemHeader} onPress={ this.navigateToScreen('profile') } >
+            <View style={sidebarNavBarItemCont}>
+              <View style={sidebarNavBarImg}>
+                <Text><Icon style={[iconColor, sidebarIconSize]} name={Platform.OS === "ios" ? "ios-person" : "md-person"} /></Text>
+              </View>
+              <Text style={sidebarNavBarItemTxt}>Profile</Text>
+            </View>
+          </TouchableOpacity>
+
 
           {/*
           <TouchableOpacity activeOpacity={0.8} style={sidebarNavBarItemHeader} onPress={ this.navigateToScreen('about') } >

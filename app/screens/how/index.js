@@ -1,16 +1,32 @@
 import React, { Component } from 'react';
+import { BackHandler } from 'react-native';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 import Styles from '../../commons/styles';
 import url from '../../commons/base_urls.js';
 
 export default class How extends Component {
+
   constructor(props) {
     super(props);
+    this.handleBackButton = this.handleBackButton.bind(this);
     this.hbdUrl = url.hbd_url;
     this.state = {
       visible: true,
     };
+  }
+
+  componentDidMount(){
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    this.props.navigation.navigate('Home');
+    return true;
   }
 
   ActivityIndicatorLoadingView = () => {

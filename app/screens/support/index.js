@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BackHandler } from 'react-native';
 import { StyleSheet, Text, View , TextInput, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MapView, { Marker, PROVIDER_GOOGLE, Callout } from 'react-native-maps';
@@ -8,6 +9,23 @@ import { NavigationActions } from "react-navigation";
 
 export default class Support extends Component {
   
+  constructor(props) {
+    super(props);
+    this.handleBackButton = this.handleBackButton.bind(this);
+  }
+
+  componentDidMount(){
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    this.props.navigation.navigate('Home');
+    return true;
+  }
 
   navigateToScreen = route => () => {
     const navigateAction = NavigationActions.navigate({
