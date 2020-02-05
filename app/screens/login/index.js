@@ -457,7 +457,7 @@ const styles = {
     },
     buttomsViewIos: {
       paddingBottom: 20,
-      height: 300,
+      height: 250,
     },
     orIos: {
       borderWidth:1,
@@ -474,7 +474,7 @@ const styles = {
       backgroundColor: '#f5f5f2', 
       marginLeft: 5, 
       marginRight: 5,
-      marginTop:10,
+      marginTop:7,
       height:35
     }
 };
