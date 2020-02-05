@@ -470,7 +470,7 @@ const styles = {
       backgroundColor: '#f5f5f2', 
       marginLeft: 5, 
       marginRight: 5,
-      marginTop:7,
+      marginTop:10,
       height:35
     }
 };
