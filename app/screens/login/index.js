@@ -453,6 +453,6 @@ const styles = {
         paddingVertical: 3
     },
     paddingIos: {
-      paddingBottom: 10,
+      paddingBottom: 20,
     }
 };
