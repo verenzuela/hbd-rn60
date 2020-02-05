@@ -825,7 +825,7 @@ export default class Profile extends Component {
 
 const styles = {
     logoutIos: {
-      marginBottom: 20,
+      marginBottom: 30,
     },
 
 }
