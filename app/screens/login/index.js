@@ -137,7 +137,7 @@ export default class Login extends Component {
       this._signInSocial(type, uid, email);
       
     } catch (e) {
-      //console.error(e);
+      //console.warn(e);
     }
   }
 

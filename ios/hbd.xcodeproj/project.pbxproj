@@ -19,6 +19,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* hbdTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* hbdTests.m */; };
 		59A4C9056B281DA1B05F730A /* libPods-hbdTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 011442AF61CD303C7C2C2BC8 /* libPods-hbdTests.a */; };
 		7E636C17115851D9B4074D18 /* libPods-hbd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B07B503433D72758E2D24AC9 /* libPods-hbd.a */; };
+		B229425523E98D6F00135E6A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B229425423E98D6E00135E6A /* GoogleService-Info.plist */; };
 		E6D2E2A53DC2DEF3374DFBB4 /* libPods-hbd-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEA7F11B188DD8DAD3E7A22E /* libPods-hbd-tvOS.a */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		850D4455B6DFA076B6C3516B /* Pods-hbd-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hbd-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-hbd-tvOSTests/Pods-hbd-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		AEA7F11B188DD8DAD3E7A22E /* libPods-hbd-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-hbd-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B07B503433D72758E2D24AC9 /* libPods-hbd.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-hbd.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B229425423E98D6E00135E6A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C66D5917B7363A42413CF8B9 /* Pods-hbdTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hbdTests.release.xcconfig"; path = "Target Support Files/Pods-hbdTests/Pods-hbdTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -147,6 +149,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				B229425423E98D6E00135E6A /* GoogleService-Info.plist */,
 			);
 			name = hbd;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				B229425523E98D6F00135E6A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,6 +470,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-hbd/Pods-hbd-resources.sh",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -486,6 +491,7 @@
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",

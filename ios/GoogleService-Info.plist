@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>908843177748-4e574160ruclmpetgrclp6650ctm6d3n.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.908843177748-4e574160ruclmpetgrclp6650ctm6d3n</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>908843177748-nc73fc2ihdr78f9hus0sroqf273q4hkg.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBBZ1-nnpXJA4BtS80bbtvi4ICcLT1zAXY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>908843177748</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.appnostic.hbd</string>
+	<key>PROJECT_ID</key>
+	<string>hotelsbyday-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>hotelsbyday-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:908843177748:ios:8d6a1d77a7e4e8680c9401</string>
+	<key>DATABASE_URL</key>
+	<string>https://hotelsbyday-app.firebaseio.com</string>
+</dict>
+</plist>

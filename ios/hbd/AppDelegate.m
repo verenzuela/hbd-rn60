@@ -11,9 +11,10 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
-#if RCT_DEV
+#import "Firebase.h"
+
 #import <React/RCTDevLoadingView.h>
-#endif
+
 
 #import <GoogleMaps/GoogleMaps.h>
 
@@ -39,6 +40,9 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  [FIRApp configure];
+
   return YES;
 }
 
