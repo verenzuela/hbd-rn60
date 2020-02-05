@@ -346,7 +346,7 @@ export default class Login extends Component {
             <Text style={[ iconColor,  { fontSize: 40, marginTop:20, }]} >#UnlockYourDay</Text>
           </View>
 
-          <View style={[ (Platform.OS==='ios') ? styles.paddingIos  : ''   ,{ height: 200   }]} >
+          <View style={[ (Platform.OS==='ios') ? styles.paddingIos : '' ,{ height: 200   }]} >
             
             {/*GOOGLE AND LINKEDIN*/}
             <View style={[ container, { flexDirection: 'row' }]}>
@@ -382,7 +382,7 @@ export default class Login extends Component {
             </View>  
             {/*END GOOGLE AND LINKEDIN*/}
 
-            <View style={[container, centerAll ]}><Text style={ Or } >OR</Text></View>  
+            <View style={[container, centerAll ]}><Text style={ (Platform.OS==='ios') ? styles.paddingIos : Or } >OR</Text></View>  
 
             {/*USER AND PASSWORD*/}
             <View style={[container, centerAll ]}>
@@ -454,5 +454,14 @@ const styles = {
     },
     paddingIos: {
       paddingBottom: 20,
-    }
+      borderRadiusBottom: 10,
+    },
+    orIos: {
+      borderWidth:1,
+      borderColor:'#2E5C65',
+      color: '#2E5C65',
+      paddingLeft: 5,
+      paddingRight: 3,
+      borderRadius:5
+    },
 };
