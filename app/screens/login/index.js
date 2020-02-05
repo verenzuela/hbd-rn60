@@ -392,7 +392,7 @@ export default class Login extends Component {
                 </View>     
             </View>  
             <View style={[container ]}>
-              <TouchableOpacity style={ loginButton } onPress={ this._signIn } >
+              <TouchableOpacity style={ (Platform.OS==='ios') ? styles.loginButtonIos : loginButton } onPress={ this._signIn } >
                 <View style={[container, centerAll]}>
                   <Text allowFontScaling={false} style={ loginButtonTxt }>LOGIN</Text>
                 </View>
@@ -402,7 +402,7 @@ export default class Login extends Component {
 
             {/*CONTINUE WHIT GUEST*/}
             <View style={[container ]}>
-              <TouchableOpacity onPress={_ => this._goAsGuest() } style={[ loginButton, { marginTop:1 }]} >
+              <TouchableOpacity onPress={_ => this._goAsGuest() } style={[ (Platform.OS==='ios') ? styles.loginButtonIos : loginButton, { marginTop:1 }]} >
                 <View style={[container, centerAll]}>
                   <Text allowFontScaling={false} style={[ loginButtonTxt, { fontWeight:'bold' } ]}>OR CONTINUE AS GUEST</Text>
                 </View>
@@ -463,4 +463,14 @@ const styles = {
       paddingRight: 3,
       borderRadius:5,
     },
+    loginButtonIos: {
+      borderWidth:1,
+      borderColor:'#2E5C65',
+      height: 40, 
+      backgroundColor: '#f5f5f2', 
+      marginLeft: 5, 
+      marginRight: 5,
+      marginTop:7,
+      height:35
+    }
 };
