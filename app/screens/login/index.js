@@ -346,7 +346,7 @@ export default class Login extends Component {
             <Text style={[ iconColor,  { fontSize: 40, marginTop:20, }]} >#UnlockYourDay</Text>
           </View>
 
-          <View style={[ (Platform.OS==='ios') ? styles.paddingIos : '' ,{ height: 200   }]} >
+          <View style={[ (Platform.OS==='ios') ? styles.buttomsViewIos : styles.buttomsView ]} >
             
             {/*GOOGLE AND LINKEDIN*/}
             <View style={[ container, { flexDirection: 'row' }]}>
@@ -452,8 +452,12 @@ const styles = {
         paddingHorizontal: 10,
         paddingVertical: 3,
     },
-    paddingIos: {
+    buttomsView: {
+      height: 200,
+    },
+    buttomsViewIos: {
       paddingBottom: 20,
+      height: 300,
     },
     orIos: {
       borderWidth:1,
