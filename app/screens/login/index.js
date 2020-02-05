@@ -382,7 +382,7 @@ export default class Login extends Component {
             </View>  
             {/*END GOOGLE AND LINKEDIN*/}
 
-            <View style={[container, centerAll ]}><Text style={ (Platform.OS==='ios') ? styles.paddingIos : Or } >OR</Text></View>  
+            <View style={[container, centerAll ]}><Text style={ (Platform.OS==='ios') ? styles.orIos : Or } >OR</Text></View>  
 
             {/*USER AND PASSWORD*/}
             <View style={[container, centerAll ]}>
