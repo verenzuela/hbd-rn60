@@ -798,8 +798,8 @@ export default class Profile extends Component {
               }
             </ScrollView>
             
-            <TouchableOpacity style={{ height:10, width:'100%' }} onPress={_ => this._logout('about') } >
-              <View style={[container, centerAll]} >
+            <TouchableOpacity style={[ (Platform.OS==='ios') ? styles.logoutIos : '' ,{ height:10, width:'100%' }]} onPress={_ => this._logout('about') } >
+              <View style={[container, centerAll ]} >
                 <Text >Logout</Text>
               </View>
             </TouchableOpacity>
@@ -820,4 +820,12 @@ export default class Profile extends Component {
     }
 
   }
+}
+
+
+const styles = {
+    logoutIos: {
+      paddingBottom: 20,
+    },
+
 }
