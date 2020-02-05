@@ -450,11 +450,10 @@ const styles = {
     exitText: {
         color: "yellow",
         paddingHorizontal: 10,
-        paddingVertical: 3
+        paddingVertical: 3,
     },
     paddingIos: {
       paddingBottom: 20,
-      borderRadiusBottom: 10,
     },
     orIos: {
       borderWidth:1,
@@ -462,6 +461,6 @@ const styles = {
       color: '#2E5C65',
       paddingLeft: 5,
       paddingRight: 3,
-      borderRadius:5
+      borderRadius:5,
     },
 };
