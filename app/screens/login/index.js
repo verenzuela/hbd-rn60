@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Linking,
 } from 'react-native';
 import { BackHandler, Dimensions, Animated } from 'react-native';
 import { NavigationActions } from "react-navigation";
@@ -14,6 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import loyaltyApi from '../../api/loyalty.js';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Styles from '../../commons/styles';
+import url from '../../commons/base_urls.js';
 
 import { GoogleSignin, GoogleSigninButton } from '@react-native-community/google-signin';
 import firebase from 'react-native-firebase';
@@ -29,7 +31,9 @@ export default class Login extends Component {
 
   constructor(props) {
     super(props);
-    
+
+    this.goToRegisterPage = this.goToRegisterPage.bind(this);
+    this.hbdUrl = url.hbd_url;
     this.handleBackButton = this.handleBackButton.bind(this);
     this.springValue = new Animated.Value(600);
 
@@ -139,7 +143,12 @@ export default class Login extends Component {
     } catch (e) {
       //console.warn(e);
     }
-  }
+  };
+
+
+  goToRegisterPage = () => {
+    Linking.openURL(this.hbdUrl+'en?action=sign-in').catch(err => console.error("Couldn't load page", err));
+  };
 
 
   _signInSocial = (type, id, email) => {
@@ -152,7 +161,7 @@ export default class Login extends Component {
         loading: true, 
       }, () => {
 
-        this.loyalty.loginSocial(type, id).then( res => {
+        this.loyalty.loginSocial(type, id, email).then( res => {
 
           if(res.data.response==true){
             
@@ -171,7 +180,19 @@ export default class Login extends Component {
               loading: false, 
               login: true, 
             }, () => {
-              Alert.alert('Error', res.data.msg, [{ text: 'Close' }]);
+
+              if(res.data.msg=='Login fail, user not found'){
+                Alert.alert(
+                  'Alert', 'You do not have a valid #MasterKey account. Please create one in our website www.hotelsbyday.com and try again', 
+                  [
+                    { text: 'Close' },
+                    { text: 'Go to register page', onPress: () => this.goToRegisterPage()},
+                  ]
+                );  
+              }else{
+                Alert.alert('Error', res.data.msg, [{ text: 'Close' }]);  
+              }
+
             });
 
           }
