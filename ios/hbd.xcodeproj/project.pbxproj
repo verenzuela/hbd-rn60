@@ -66,6 +66,7 @@
 		AEA7F11B188DD8DAD3E7A22E /* libPods-hbd-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-hbd-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B07B503433D72758E2D24AC9 /* libPods-hbd.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-hbd.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B229425423E98D6E00135E6A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B27C31F423ED9CE0003335AF /* hbd.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = hbd.entitlements; path = hbd/hbd.entitlements; sourceTree = "<group>"; };
 		C66D5917B7363A42413CF8B9 /* Pods-hbdTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hbdTests.release.xcconfig"; path = "Target Support Files/Pods-hbdTests/Pods-hbdTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -142,6 +143,7 @@
 		13B07FAE1A68108700A75B9A /* hbd */ = {
 			isa = PBXGroup;
 			children = (
+				B27C31F423ED9CE0003335AF /* hbd.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -689,11 +691,13 @@
 			baseConfigurationReference = 4380C892D0AE916380EB26CA /* Pods-hbd.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_ENTITLEMENTS = hbd/hbd.entitlements;
+				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = UHK8W4R6AQ;
 				INFOPLIST_FILE = hbd/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 4.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -710,10 +714,12 @@
 			baseConfigurationReference = 72466FFE7856C1B04ADD7854 /* Pods-hbd.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_ENTITLEMENTS = hbd/hbd.entitlements;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = UHK8W4R6AQ;
 				INFOPLIST_FILE = hbd/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 4.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
