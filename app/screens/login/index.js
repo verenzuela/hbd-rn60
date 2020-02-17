@@ -136,9 +136,10 @@ export default class Login extends Component {
       dataUser = firebaseUserCredential.user.toJSON();
       email = dataUser.providerData[0].email;
       uid = dataUser.providerData[0].uid;
+      displayName = dataUser.providerData[0].displayName;
       type = 'google';
 
-      this._signInSocial(type, uid, email);
+      this._signInSocial(type, uid, email, displayName);
       
     } catch (e) {
       //console.warn(e);
@@ -151,7 +152,7 @@ export default class Login extends Component {
   };
 
 
-  _signInSocial = (type, id, email) => {
+  _signInSocial = (type, id, email, displayName) => {
     if( type == '' || id == ''){
       Alert.alert('Error', 'User not found', [{
         text: 'Close'
@@ -161,7 +162,7 @@ export default class Login extends Component {
         loading: true, 
       }, () => {
 
-        this.loyalty.loginSocial(type, id, email).then( res => {
+        this.loyalty.loginSocial(type, id, email, displayName).then( res => {
 
           if(res.data.response==true){
             

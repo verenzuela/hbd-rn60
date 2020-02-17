@@ -63,7 +63,7 @@ export default class loyalty {
 	};
 
 
-	loginSocial = (type, id, email) => {
+	loginSocial = (type, id, email, firstname, lastname='') => {
 		let url = this.getQueryApiURL('v1');
 		let options = {
 			method: "POST",
@@ -74,6 +74,8 @@ export default class loyalty {
 				type: type,
 				id: id,
 				email: email,
+				firstname: firstname,
+				lastname: lastname
 			}),
         };
 		url += '/loginBySocialId';
