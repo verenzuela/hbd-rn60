@@ -314,7 +314,7 @@ export default class Login extends Component {
         >
                   
             <View style={[container, centerAll, { flexDirection: 'row', }]}>
-               <View style={socialButtonIcon}>
+              <View style={socialButtonIcon}>
                 <Text><MaterialCommunityIcons color={ '#fff' } size={25} name={'linkedin-box'} /></Text>
               </View>
               <Text allowFontScaling={false} style={ googleButtonTxt }> Login with Linkedin </Text>              
@@ -360,7 +360,7 @@ export default class Login extends Component {
       return (
         <View style={[container]}>
           
-          <View style={[ centerAll, { flex:1}]} >
+          <View style={[ centerAll, { flex:3}]} >
             <Image
               style={{ height: 150, width: 150 }}
               source={ require('../../assets/png/HBD_logo_NEW_SM_tablet.png') }
@@ -372,21 +372,7 @@ export default class Login extends Component {
             
             {/*GOOGLE AND LINKEDIN*/}
             <View style={[ container, { flexDirection: 'row' }]}>
-              {/*
-                <View style={[container, { alignContent:'stretch' } ]}>
-                  <LinkedInModal
-                    clientID="781vpzzyksmg15"
-                    clientSecret="CvldFe8uxe49YoZo"
-                    redirectUri="http://www.demo.hotelsbyday.com/en/user/sign_in"
-                    shouldGetAccessToken={false}
-                    onSuccess={ authorization_code => console.warn(authorization_code) }
-                    onError={ error => console.warn(error) }
-                    ref={ref => { this.modal = ref; }}
-                    renderButton={renderButton}
-                  />
-                </View>
-              */}
-
+              
               <View style={[container, { alignContent:'stretch' } ]}>
 
                 <TouchableOpacity style={ googleButton } onPress={_ => this.googleLogin() } >
@@ -398,7 +384,6 @@ export default class Login extends Component {
                   </View>
                 </TouchableOpacity>
 
-                
               </View>
 
             </View>  
@@ -478,8 +463,9 @@ const styles = {
       height: 200,
     },
     buttomsViewIos: {
+      flex: 1,
       paddingBottom: 20,
-      height: 250,
+      //height: 250,
     },
     orIos: {
       borderWidth:1,
