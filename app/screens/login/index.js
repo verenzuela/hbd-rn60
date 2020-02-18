@@ -360,9 +360,8 @@ export default class Login extends Component {
       return (
         <View style={[container]}>
           
-          <View style={[ centerAll, { flex:3}]} >
-            <Image
-              style={{ height: 150, width: 150 }}
+          <View style={[ centerAll, { flex:2}]} >
+            <Image style={{ height: 100, width: 100 }}
               source={ require('../../assets/png/HBD_logo_NEW_SM_tablet.png') }
             />
             <Text style={[ iconColor,  { fontSize: 40, marginTop:20, }]} >#UnlockYourDay</Text>
@@ -371,9 +370,9 @@ export default class Login extends Component {
           <View style={[ (Platform.OS==='ios') ? styles.buttomsViewIos : styles.buttomsView ]} >
             
             {/*GOOGLE AND LINKEDIN*/}
-            <View style={[ container, { flexDirection: 'row' }]}>
+            <View style={ { flexDirection: 'row' }}>
               
-              <View style={[container, { alignContent:'stretch' } ]}>
+              <View style={ { alignContent:'stretch' }}>
 
                 <TouchableOpacity style={ googleButton } onPress={_ => this.googleLogin() } >
                   <View style={[container, centerAll, { flexDirection: 'row', }]}>
@@ -389,16 +388,16 @@ export default class Login extends Component {
             </View>  
             {/*END GOOGLE AND LINKEDIN*/}
 
-            <View style={[container, centerAll ]}><Text style={ (Platform.OS==='ios') ? styles.orIos : Or } >OR</Text></View>  
+            <View style={[ centerAll ]}><Text style={ (Platform.OS==='ios') ? styles.orIos : Or } >OR</Text></View>  
 
             {/*USER AND PASSWORD*/}
-            <View style={[container, centerAll ]}>
+            <View style={[ centerAll ]}>
                 <View style={{ flexDirection:'row' }}>
                   <TextInput style={[ inputLogin, {  marginRight:3 }]} placeholder='E-Mail' value={this.state.username} onChangeText={text => this.setState({username: text})} autoCapitalize="none" placeholderTextColor='grey'  />
                   <TextInput style={ inputLogin } placeholder='Password' value={this.state.password} onChangeText={text => this.setState({password: text})} autoCapitalize="none" placeholderTextColor='grey' secureTextEntry={true}  />
                 </View>     
             </View>  
-            <View style={[container ]}>
+            <View>
               <TouchableOpacity style={ (Platform.OS==='ios') ? styles.loginButtonIos : loginButton } onPress={ this._signIn } >
                 <View style={[container, centerAll]}>
                   <Text allowFontScaling={false} style={ loginButtonTxt }>LOGIN</Text>
@@ -408,7 +407,7 @@ export default class Login extends Component {
             {/*END USER AND PASSWORD*/}
 
             {/*CONTINUE WHIT GUEST*/}
-            <View style={[container ]}>
+            <View>
               <TouchableOpacity onPress={_ => this._goAsGuest() } style={[ (Platform.OS==='ios') ? styles.loginButtonIos : loginButton, { marginTop:1 }]} >
                 <View style={[container, centerAll]}>
                   <Text allowFontScaling={false} style={[ loginButtonTxt, { fontWeight:'bold' } ]}>OR CONTINUE AS GUEST</Text>
