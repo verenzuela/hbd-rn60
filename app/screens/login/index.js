@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
   Linking,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { BackHandler, Dimensions, Animated } from 'react-native';
 import { NavigationActions } from "react-navigation";
@@ -314,7 +315,7 @@ export default class Login extends Component {
         >
                   
             <View style={[container, centerAll, { flexDirection: 'row', }]}>
-              <View style={socialButtonIcon}>
+               <View style={socialButtonIcon}>
                 <Text><MaterialCommunityIcons color={ '#fff' } size={25} name={'linkedin-box'} /></Text>
               </View>
               <Text allowFontScaling={false} style={ googleButtonTxt }> Login with Linkedin </Text>              
@@ -358,10 +359,11 @@ export default class Login extends Component {
     if(this.state.login){
       
       return (
-        <View style={[container]}>
+        <KeyboardAvoidingView style={[container]}>
           
-          <View style={[ centerAll, { flex:2}]} >
-            <Image style={{ height: 100, width: 100 }}
+          <View style={[ centerAll, { flex:1}]} >
+            <Image
+              style={{ height: 150, width: 150 }}
               source={ require('../../assets/png/HBD_logo_NEW_SM_tablet.png') }
             />
             <Text style={[ iconColor,  { fontSize: 40, marginTop:20, }]} >#UnlockYourDay</Text>
@@ -370,9 +372,23 @@ export default class Login extends Component {
           <View style={[ (Platform.OS==='ios') ? styles.buttomsViewIos : styles.buttomsView ]} >
             
             {/*GOOGLE AND LINKEDIN*/}
-            <View style={ { flexDirection: 'row' }}>
-              
-              <View style={ { alignContent:'stretch' }}>
+            <View style={[ container, { flexDirection: 'row' }]}>
+              {/*
+                <View style={[container, { alignContent:'stretch' } ]}>
+                  <LinkedInModal
+                    clientID="781vpzzyksmg15"
+                    clientSecret="CvldFe8uxe49YoZo"
+                    redirectUri="http://www.demo.hotelsbyday.com/en/user/sign_in"
+                    shouldGetAccessToken={false}
+                    onSuccess={ authorization_code => console.warn(authorization_code) }
+                    onError={ error => console.warn(error) }
+                    ref={ref => { this.modal = ref; }}
+                    renderButton={renderButton}
+                  />
+                </View>
+              */}
+
+              <View style={[container, { alignContent:'stretch' } ]}>
 
                 <TouchableOpacity style={ googleButton } onPress={_ => this.googleLogin() } >
                   <View style={[container, centerAll, { flexDirection: 'row', }]}>
@@ -383,21 +399,22 @@ export default class Login extends Component {
                   </View>
                 </TouchableOpacity>
 
+                
               </View>
 
             </View>  
             {/*END GOOGLE AND LINKEDIN*/}
 
-            <View style={[ centerAll ]}><Text style={ (Platform.OS==='ios') ? styles.orIos : Or } >OR</Text></View>  
+            <View style={[container, centerAll ]}><Text style={ (Platform.OS==='ios') ? styles.orIos : Or } >OR</Text></View>  
 
             {/*USER AND PASSWORD*/}
-            <View style={[ centerAll ]}>
+            <View style={[container, centerAll ]}>
                 <View style={{ flexDirection:'row' }}>
                   <TextInput style={[ inputLogin, {  marginRight:3 }]} placeholder='E-Mail' value={this.state.username} onChangeText={text => this.setState({username: text})} autoCapitalize="none" placeholderTextColor='grey'  />
                   <TextInput style={ inputLogin } placeholder='Password' value={this.state.password} onChangeText={text => this.setState({password: text})} autoCapitalize="none" placeholderTextColor='grey' secureTextEntry={true}  />
                 </View>     
             </View>  
-            <View>
+            <View style={[container ]}>
               <TouchableOpacity style={ (Platform.OS==='ios') ? styles.loginButtonIos : loginButton } onPress={ this._signIn } >
                 <View style={[container, centerAll]}>
                   <Text allowFontScaling={false} style={ loginButtonTxt }>LOGIN</Text>
@@ -407,7 +424,7 @@ export default class Login extends Component {
             {/*END USER AND PASSWORD*/}
 
             {/*CONTINUE WHIT GUEST*/}
-            <View>
+            <View style={[container ]}>
               <TouchableOpacity onPress={_ => this._goAsGuest() } style={[ (Platform.OS==='ios') ? styles.loginButtonIos : loginButton, { marginTop:1 }]} >
                 <View style={[container, centerAll]}>
                   <Text allowFontScaling={false} style={[ loginButtonTxt, { fontWeight:'bold' } ]}>OR CONTINUE AS GUEST</Text>
@@ -429,7 +446,7 @@ export default class Login extends Component {
           </Animated.View>
 
 
-        </View>
+        </KeyboardAvoidingView>
       );
 
     }else{
@@ -462,9 +479,8 @@ const styles = {
       height: 200,
     },
     buttomsViewIos: {
-      flex: 1,
       paddingBottom: 20,
-      //height: 250,
+      height: 250,
     },
     orIos: {
       borderWidth:1,
