@@ -361,7 +361,7 @@ export default class Login extends Component {
       return (
         <KeyboardAvoidingView style={[container]}>
           
-          <View style={[ centerAll, { flex:1}]} >
+          <View style={[ centerAll, { flex:2}]} >
             <Image
               style={{ height: 150, width: 150 }}
               source={ require('../../assets/png/HBD_logo_NEW_SM_tablet.png') }
@@ -479,8 +479,8 @@ const styles = {
       height: 200,
     },
     buttomsViewIos: {
+      flex:1,
       paddingBottom: 20,
-      height: 250,
     },
     orIos: {
       borderWidth:1,
