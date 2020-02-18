@@ -195,7 +195,7 @@ export default StyleSheet.create({
 		borderWidth:1,
 		borderColor:'#2E5C65',
 		height: 40,
-		width: '48.5%',
+		width: '49%',
 	},
 
 	Or:{
@@ -208,14 +208,13 @@ export default StyleSheet.create({
 	}, 
 
 	loginButton:{
-		borderWidth:1,
-		borderColor:'#2E5C65',
-		height: 40, 
+		height:40, 
 		backgroundColor: '#f5f5f2', 
 		marginLeft: 5, 
-		marginRight: 5,
-		marginTop:3,
-		height:35
+		marginRight: 5, 
+		marginTop:1, 
+		borderWidth:1, 
+		borderColor:'#2E5C65',
 	},
 
 	loginButtonTxt:{
