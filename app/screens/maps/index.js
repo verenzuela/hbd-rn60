@@ -29,6 +29,7 @@ import { YellowBox } from 'react-native';
 import moment from 'moment';
 import url from '../../commons/base_urls.js';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import LinearGradient from 'react-native-linear-gradient';
 
 import {
   PacmanIndicator
@@ -556,23 +557,28 @@ export default class Maps extends Component {
           <Text>{` From: `}</Text>
             <Text style={[ fontColorGreen ]}>{` ${items.discounted_price} ${items.currency} `}</Text>
 
-            <TouchableOpacity onPress={() => this.goToHotelDescription(items.id)}
-              style={{ 
+            <TouchableOpacity onPress={() => this.goToHotelDescription(items.id)}>
+              
+              <LinearGradient colors={['#f4be50', '#f7dfa5', '#f4be50']} 
+                style={{ 
                   width:70, 
                   height:30, 
                   borderWidth:1, 
                   marginTop: 5, 
-                  borderRadius:2, 
-                  backgroundColor:'#f0c14b',
-                  borderColor: '#846a29', 
+                  borderRadius:2,
+                  borderColor: '#9c7e31',
                 }}
-            >
-              <View style={[ container, centerAll ]}>
-                <Text>
-                  Select
-                </Text>  
-              </View>
+              >
+                <View style={[ container, centerAll ]}>
+                  <Text>
+                    Select
+                  </Text>  
+                </View>
+              </LinearGradient>
+
             </TouchableOpacity>
+
+            
 
           </View>
         </View>
