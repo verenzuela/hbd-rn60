@@ -460,15 +460,15 @@ const styles = {
     },
     orIos: {
       borderWidth:1,
-      borderColor:'#2E5C65',
-      color: '#2E5C65',
+      borderColor:'#1eb6ff',
+      color: '#1eb6ff',
       paddingLeft: 5,
       paddingRight: 3,
       borderRadius:5,
     },
     loginButtonIos: {
       borderWidth:1,
-      borderColor:'#2E5C65',
+      borderColor:'#1eb6ff',
       height: 40, 
       backgroundColor: '#f5f5f2', 
       marginLeft: 5, 

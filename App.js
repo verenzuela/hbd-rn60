@@ -173,7 +173,7 @@ const HomeTabNavigator = createBottomTabNavigator(
       return {
         headerTitle: titleName,
         headerStyle: { backgroundColor: '#f5f5f2' },
-        headerTintColor: '#2E5C65',
+        headerTintColor: '#1eb6ff',
       };
     },
     defaultNavigationOptions: ({ navigation }) => ({
@@ -191,7 +191,7 @@ const HomeTabNavigator = createBottomTabNavigator(
         }
         return <Icon name={iconName} name={iconName} size={25} color={tintColor} />;
       },
-      tabBarOptions: { activeTintColor:'#2E5C65', }
+      tabBarOptions: { activeTintColor:'#1eb6ff', }
     })
   }
 );
@@ -212,7 +212,7 @@ const HomeStackNavigator = createStackNavigator(
         title: 'Home',
         headerBackTitle: null,
         headerStyle: { backgroundColor: '#f5f5f2' },
-        headerTintColor: '#2E5C65',
+        headerTintColor: '#1eb6ff',
       }),
     },
 
@@ -222,7 +222,7 @@ const HomeStackNavigator = createStackNavigator(
         title: 'Change City',
         headerBackTitle: null,
         headerStyle: { backgroundColor: '#f5f5f2' },
-        headerTintColor: '#2E5C65',
+        headerTintColor: '#1eb6ff',
       }),
     },
 
@@ -232,7 +232,7 @@ const HomeStackNavigator = createStackNavigator(
         title: 'Change Date',
         headerBackTitle: null,
         headerStyle: { backgroundColor: '#f5f5f2' },
-        headerTintColor: '#2E5C65',
+        headerTintColor: '#1eb6ff',
       }),
     },
 
@@ -242,7 +242,7 @@ const HomeStackNavigator = createStackNavigator(
         title: 'How It Works',
         headerBackTitle: null,
         headerStyle: { backgroundColor: '#f5f5f2' },
-        headerTintColor: '#2E5C65',
+        headerTintColor: '#1eb6ff',
       }),
     },
 
@@ -252,7 +252,7 @@ const HomeStackNavigator = createStackNavigator(
         title: 'Contact Us',
         headerBackTitle: null,
         headerStyle: { backgroundColor: '#f5f5f2' },
-        headerTintColor: '#2E5C65',
+        headerTintColor: '#1eb6ff',
       })
     },
     about: { 
@@ -261,7 +261,7 @@ const HomeStackNavigator = createStackNavigator(
         title: 'About Us',
         headerBackTitle: null,
         headerStyle: { backgroundColor: '#f5f5f2' },
-        headerTintColor: '#2E5C65',
+        headerTintColor: '#1eb6ff',
       })
     },
     helpDesk: { 
@@ -270,7 +270,7 @@ const HomeStackNavigator = createStackNavigator(
         title: 'Help Desk',
         headerBackTitle: null,
         headerStyle: { backgroundColor: '#f5f5f2' },
-        headerTintColor: '#2E5C65',
+        headerTintColor: '#1eb6ff',
       })
     },
     hotelDetail: { 
@@ -279,7 +279,7 @@ const HomeStackNavigator = createStackNavigator(
         title: 'HotelsByDay',
         headerBackTitle: null,
         headerStyle: { backgroundColor: '#f5f5f2' },
-        headerTintColor: '#2E5C65',
+        headerTintColor: '#1eb6ff',
       })
     },
     profile: { 
@@ -288,7 +288,7 @@ const HomeStackNavigator = createStackNavigator(
         title: 'Loyalty Dashboard',
         headerBackTitle: null,
         headerStyle: { backgroundColor: '#f5f5f2' },
-        headerTintColor: '#2E5C65',
+        headerTintColor: '#1eb6ff',
       })
     },
   },
@@ -297,7 +297,7 @@ const HomeStackNavigator = createStackNavigator(
       return {
         headerLeft: (
           <TouchableOpacity style={[style.touchable, { paddingLeft:10 }]} onPress={() => navigation.toggleDrawer()} >
-            <Icon name={Platform.OS === "ios" ? "ios-menu" : "md-menu"} color='#2E5C65' size={30}  />
+            <Icon name={Platform.OS === "ios" ? "ios-menu" : "md-menu"} color='#1eb6ff' size={30}  />
           </TouchableOpacity>
         ),
         headerRight: (
@@ -306,7 +306,7 @@ const HomeStackNavigator = createStackNavigator(
             source={ require('./app/assets/png/HBD_logo_color_small.png') }
           />
         ),
-        headerStyle: { backgroundColor: '#2E5C65' },
+        headerStyle: { backgroundColor: '#1eb6ff' },
         headerTintColor: '#fff',
       };
     }

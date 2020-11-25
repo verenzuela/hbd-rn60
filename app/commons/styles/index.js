@@ -11,13 +11,13 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
 	iconColor: {
-		color: '#2E5C65',
+		color: '#1eb6ff',
 	},
 	iconColorWhite:{
 		color: '#fff',
 	},
 	backgroundColor: {
-		backgroundColor: '#2E5C65',
+		backgroundColor: '#1eb6ff',
 	},
 	backgroundColorLight: {
 		backgroundColor: '#f5f5f2',
@@ -26,10 +26,10 @@ export default StyleSheet.create({
 		borderWidth:1,
 	},
 	borderColor: {
-		borderColor:'#2E5C65',
+		borderColor:'#1eb6ff',
 	},
 	fontColorGreen: {
-		color: '#2E5C65',
+		color: '#000000',
 	},
 	fontSizeResponsive: {
 		fontSize: 0.030*width,
@@ -193,15 +193,15 @@ export default StyleSheet.create({
 
 	inputLogin:{
 		borderWidth:1,
-		borderColor:'#2E5C65',
+		borderColor:'#1eb6ff',
 		height: 40,
 		width: '49%',
 	},
 
 	Or:{
 		borderWidth:1,
-		borderColor:'#2E5C65',
-		color: '#2E5C65',
+		borderColor:'#1eb6ff',
+		color: '#1eb6ff',
 		paddingLeft: 5,
 		paddingRight: 3,
 		borderRadius:20
@@ -214,13 +214,13 @@ export default StyleSheet.create({
 		marginRight: 5, 
 		marginTop:1, 
 		borderWidth:1, 
-		borderColor:'#2E5C65',
+		borderColor:'#1eb6ff',
 	},
 
 	loginButtonTxt:{
 		fontSize: 0.033*width,
 		padding: 2,
-		color: '#2E5C65',
+		color: '#1eb6ff',
 	},
 
 
@@ -249,8 +249,8 @@ export default StyleSheet.create({
     borderLeftWidth: 1,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor:'#2E5C65',
-    backgroundColor: '#2E5C65',
+    borderColor:'#1eb6ff',
+    backgroundColor: '#1eb6ff',
     //borderRightWidth: 1, 
     paddingLeft: 5, 
     paddingRight:5 

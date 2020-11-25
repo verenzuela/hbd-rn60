@@ -17,7 +17,7 @@
     "base-64": "^0.1.0",
     "moment": "^2.24.0",
     "react": "16.8.6",
-    "react-native": "^0.63.3",
+    "react-native": "0.60.5",
     "react-native-calendars": "^1.252.0",
     "react-native-communications": "^2.2.1",
     "react-native-datepicker": "^1.7.2",

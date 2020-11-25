@@ -459,7 +459,7 @@ export default class Maps extends Component {
         key={ index+'-'+items.id }
         coordinate={{ latitude: items.lat , longitude: items.lon }}
       > 
-        <View style={{ backgroundColor: '#2E5C65', borderColor: '#f5f5f2', borderWidth: 0.3, padding:2, borderRadius: 4, }} >
+        <View style={{ backgroundColor: '#1eb6ff', borderColor: '#f5f5f2', borderWidth: 0.3, padding:2, borderRadius: 4, }} >
           <View style={{ borderColor: '#f5f5f2', borderWidth: 0.2, borderRadius: 3, padding:4, }}>
             <Text style={{ color: '#f5f5f2', fontWeight: 'bold' }} >{`${items.discounted_price} ${items.currency}`}</Text>
           </View> 
@@ -637,7 +637,7 @@ export default class Maps extends Component {
     if(this.state.loading){
       return (
         <View style={[container, centerAll]}>
-          <PacmanIndicator color='#2E5C65' size={60}  />
+          <PacmanIndicator color='#1eb6ff' size={60}  />
           {/*<Text>{ this.getSearchMsg() }</Text>*/}
         </View>
       );
